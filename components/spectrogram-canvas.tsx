@@ -120,7 +120,7 @@ export function SpectrogramCanvas({ audioRef, className }: SpectrogramCanvasProp
 
       const width = canvas!.width
       const height = canvas!.height
-      ctx!.drawImage(canvas!, -1, 0, width - 1, height, 0, 0, width - 1, height)
+      ctx!.drawImage(canvas!, 1, 0, width - 1, height, 0, 0, width - 1, height)
 
       const bundle = audioRef.current
       if (bundle) {
