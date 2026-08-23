@@ -1,0 +1,101 @@
+/* Desktop chrome: frameless titlebar + the few offsets it needs.
+   Nothing here touches the spiral itself. */
+
+:root { --tb: 30px; }
+
+.titlebar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--tb);
+  z-index: 100;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(180deg, rgba(4, 4, 16, .82), rgba(4, 4, 16, 0));
+  backdrop-filter: blur(6px);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.titlebar-drag {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  -webkit-app-region: drag;
+}
+
+.titlebar-name {
+  font-size: 8px;
+  letter-spacing: .34em;
+  color: rgba(230, 240, 255, .5);
+  text-shadow: 0 0 10px rgba(54, 255, 255, .45), 0 0 20px rgba(255, 45, 210, .25);
+  pointer-events: none;
+}
+
+.titlebar-controls {
+  display: flex;
+  -webkit-app-region: no-drag;
+}
+
+.wbtn {
+  width: 44px;
+  height: var(--tb);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(230, 240, 255, .62);
+  cursor: pointer;
+  transition: background .16s, color .16s, box-shadow .16s;
+}
+
+.wbtn svg {
+  width: 10px;
+  height: 10px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.wbtn:hover {
+  color: #fff;
+  background: hsl(var(--h) 100% 60% / .18);
+  box-shadow: inset 0 -1px 0 hsl(var(--h) 100% 72% / .8), 0 0 22px hsl(var(--h) 100% 62% / .28);
+}
+
+.wbtn:focus-visible {
+  outline: 1px solid rgba(54, 255, 255, .8);
+  outline-offset: -3px;
+}
+
+.wbtn.close:hover {
+  color: #fff;
+  background: rgba(255, 45, 210, .34);
+  box-shadow: inset 0 -1px 0 #ff2dd2, 0 0 26px rgba(255, 45, 210, .45);
+}
+
+.wbtn .ico-restore { display: none; }
+body.maximized .wbtn .ico-max { display: none; }
+body.maximized .wbtn .ico-restore { display: block; }
+
+/* Make room for the titlebar so nothing hides underneath it. */
+.top { top: calc(4vh + 20px); }
+.wordmark { top: calc(6vh + 18px); }
+
+/* Fullscreen (F11) — pure spiral, no chrome. */
+body.fullscreen .titlebar { display: none; }
+body.fullscreen .top { top: 4vh; }
+body.fullscreen .wordmark { top: 6vh; }
+
+/* "OPEN PROJECT" becomes live only when the active entry has a url. */
+.detail .open.live {
+  pointer-events: auto;
+  cursor: pointer;
+  color: #fff;
+}
+.detail .open.live:hover {
+  text-shadow: 0 0 14px #36ffff, 0 0 26px hsl(var(--h) 100% 66%);
+  border-bottom-color: #fff;
+}
