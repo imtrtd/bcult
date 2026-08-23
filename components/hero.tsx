@@ -1,17 +1,51 @@
 'use client'
 
-import Image from 'next/image'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
-import { useRef, useState, type CSSProperties, type PointerEvent } from 'react'
+import { SpectrogramCanvas, type SpectrogramAudioBundle } from './spectrogram-canvas'
+import { useEffect, useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 
 const EQ_BARS = Array.from({ length: 24 })
+const MIN_FREQ = 60
+const MAX_FREQ = 20000
+
+function markerPosition(frequency: number) {
+  const logMin = Math.log(MIN_FREQ)
+  const logMax = Math.log(MAX_FREQ)
+  const t = (Math.log(frequency) - logMin) / (logMax - logMin)
+  return `${(1 - Math.min(1, Math.max(0, t))) * 100}%`
+}
 
 export function Hero() {
   const { copy } = useLocale()
   const t = copy.hero
   const [frequency, setFrequency] = useState(440)
-  const audioRef = useRef<{ context: AudioContext; oscillator: OscillatorNode; gain: GainNode } | null>(null)
+  const audioRef = useRef<(SpectrogramAudioBundle & { oscillator: OscillatorNode; gain: GainNode }) | null>(null)
+
+  useEffect(() => {
+    return () => {
+      void audioRef.current?.context.close()
+      audioRef.current = null
+    }
+  }, [])
+
+  function ensureAudio() {
+    if (audioRef.current) return audioRef.current
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext
+    const context = new AudioContextClass()
+    const oscillator = context.createOscillator()
+    const gain = context.createGain()
+    const analyser = context.createAnalyser()
+    analyser.fftSize = 2048
+    analyser.smoothingTimeConstant = 0.72
+    oscillator.type = 'sine'
+    gain.gain.value = 0.0001
+    oscillator.connect(gain).connect(analyser).connect(context.destination)
+    oscillator.start()
+    const bundle = { context, oscillator, gain, analyser }
+    audioRef.current = bundle
+    return bundle
+  }
 
   function updateFrequency(event: PointerEvent<HTMLDivElement>) {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -28,25 +62,15 @@ export function Hero() {
 
   function startFrequency(event: PointerEvent<HTMLDivElement>) {
     event.currentTarget.setPointerCapture(event.pointerId)
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext
-    const context = new AudioContextClass()
-    const oscillator = context.createOscillator()
-    const gain = context.createGain()
-    oscillator.type = 'sine'
-    gain.gain.value = 0.0001
-    oscillator.connect(gain).connect(context.destination)
-    oscillator.start()
-    audioRef.current = { context, oscillator, gain }
+    ensureAudio()
     updateFrequency(event)
   }
 
   function stopFrequency(event: PointerEvent<HTMLDivElement>) {
-    if (!audioRef.current) return
-    const { context, oscillator, gain } = audioRef.current
-    gain.gain.setTargetAtTime(0.0001, context.currentTime, 0.04)
-    oscillator.stop(context.currentTime + 0.18)
-    void context.close()
-    audioRef.current = null
+    const active = audioRef.current
+    if (active) {
+      active.gain.gain.setTargetAtTime(0.0001, active.context.currentTime, 0.08)
+    }
     event.currentTarget.releasePointerCapture?.(event.pointerId)
   }
 
@@ -97,8 +121,8 @@ export function Hero() {
       <Reveal delay={160} className="mt-10 sm:mt-14">
         <div
           role="application"
-          aria-label="Interactive frequency controller"
-          className="group relative aspect-[16/7] cursor-crosshair touch-none overflow-hidden border border-border bg-blue outline-none focus-visible:ring-2 focus-visible:ring-lime"
+          aria-label={`${t.alt}. Drag to explore.`}
+          className="carbon-panel signal-glow group relative aspect-[16/7] cursor-crosshair touch-none overflow-hidden outline-none focus-visible:ring-2 focus-visible:ring-lime"
           style={{ '--frequency': `${frequency}Hz` } as CSSProperties}
           onPointerDown={startFrequency}
           onPointerMove={(event) => { if (event.buttons) updateFrequency(event) }}
@@ -106,14 +130,20 @@ export function Hero() {
           onPointerCancel={stopFrequency}
           tabIndex={0}
         >
-          <Image src="/images/spectrogram.png" alt={t.alt} fill priority sizes="(max-width: 1152px) 100vw, 1088px" className="object-cover opacity-80 mix-blend-screen transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
-          <div className="pointer-events-none absolute inset-0 bg-background/20" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-lime/70" aria-hidden="true" />
-          <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px origin-bottom bg-background/60 transition-transform duration-75" style={{ transform: `rotate(${(frequency - 520) / 8}deg)` }} aria-hidden="true" />
-          <span className="label-mono absolute left-4 top-4 text-background">{t.frequency}</span>
-          <span className="label-mono absolute right-4 top-4 text-background/70">drag / feel</span>
-          <span className="label-mono absolute bottom-4 left-4 text-background/70">60 / 24000 Hz</span>
-          <span className="label-mono absolute bottom-4 right-4 text-lime">LIVE TRANSLATION</span>
+          <SpectrogramCanvas
+            audioRef={audioRef}
+            className="absolute inset-0 h-full w-full opacity-90 transition-transform duration-700 ease-out group-hover:scale-[1.02]"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-background/10" aria-hidden="true" />
+          <div
+            className="pointer-events-none absolute inset-x-0 h-px bg-lime/80 transition-[top] duration-75"
+            style={{ top: markerPosition(frequency), boxShadow: '0 0 10px oklch(0.895 0.19 118 / 55%)' }}
+            aria-hidden="true"
+          />
+          <span className="label-mono absolute left-4 top-4 rounded-sm bg-background/70 px-2 py-1 text-lime backdrop-blur-sm">{t.frequency}</span>
+          <span className="label-mono absolute right-4 top-4 rounded-sm bg-background/70 px-2 py-1 text-muted-foreground backdrop-blur-sm">drag / feel</span>
+          <span className="label-mono absolute bottom-4 left-4 rounded-sm bg-background/70 px-2 py-1 text-muted-foreground backdrop-blur-sm">60 / 24000 Hz</span>
+          <span className="label-mono absolute bottom-4 right-4 rounded-sm bg-background/70 px-2 py-1 text-lime backdrop-blur-sm">LIVE TRANSLATION</span>
         </div>
       </Reveal>
 
