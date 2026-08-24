@@ -13,7 +13,7 @@
  *   url         — optional. With it, OPEN PROJECT and Enter open the browser.
  */
 window.ITD_PROJECTS = [
-  { title: "HOME / WEB OS",         description: "Оболочка рабочего стола I/TD — спираль проектов на чистом JavaScript.", category: "SYSTEM",     stack: "JAVASCRIPT", access: "PRIVATE", status: "offline" },
+  { title: "HOME / WEB OS",         description: "Оболочка рабочего стола I/TD — спираль проектов на чистом JavaScript.", category: "SYSTEM",     stack: "JAVASCRIPT", access: "PRIVATE", status: "offline", url: "https://app.imtryingtodesign.com/" },
   { title: "BRANDCULTURA LANDING",  description: "Посадочная страница бренда Brandcultura на статическом HTML.",          category: "BRAND",      stack: "HTML",       access: "PUBLIC",  status: "live" },
   { title: "NAMENLOS WEBSITE",      description: "Сайт Namenlos: витрина бренда, вёрстка без фреймворков.",               category: "BRAND",      stack: "HTML",       access: "PRIVATE", status: "live" },
   { title: "IMTRTD WEB",            description: "Основной веб-проект I/TD на TypeScript, публичный репозиторий.",        category: "BRAND",      stack: "TYPESCRIPT", access: "PUBLIC",  status: "live" },
