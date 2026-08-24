@@ -198,13 +198,12 @@
     }, 260);
   }
 
-  // remember the last filter the user picked
-  const origSetFilter = UI.setFilter;
-  UI.setFilter = (key) => {
-    origSetFilter(key);
-    settings.filter = UI.state.filter;
+  // remember the last filter the user picked — the rail, the grid chips and the
+  // palette all land here, so this catches every path
+  addEventListener('itd:filter', (e) => {
+    settings.filter = e.detail.key;
     save();
-  };
+  });
 
   addEventListener('contextmenu', (e) => e.preventDefault());
   addEventListener('dragover', (e) => e.preventDefault());

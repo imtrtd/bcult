@@ -150,6 +150,7 @@
     }
     window.ITD_AUDIO.sweep();
     toast(`ФИЛЬТР · ${key} · ${window.ITD_SPIRAL.total}`);
+    dispatchEvent(new CustomEvent('itd:filter', { detail: { key: state.filter } }));
   }
 
   /* ------------------------------------------------------------ search */
