@@ -3,52 +3,12 @@
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
 import { DrumMachine } from './drum-machine'
-import { useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 
 const EQ_BARS = Array.from({ length: 24 })
 
 export function Hero() {
   const { copy } = useLocale()
   const t = copy.hero
-  const [frequency, setFrequency] = useState(440)
-  const audioRef = useRef<{ context: AudioContext; oscillator: OscillatorNode; gain: GainNode } | null>(null)
-
-  function updateFrequency(event: PointerEvent<HTMLDivElement>) {
-    const rect = event.currentTarget.getBoundingClientRect()
-    const x = Math.min(1, Math.max(0, (event.clientX - rect.left) / rect.width))
-    const y = Math.min(1, Math.max(0, (event.clientY - rect.top) / rect.height))
-    const nextFrequency = Math.round(80 + x * 880 + (1 - y) * 120)
-    setFrequency(nextFrequency)
-    const active = audioRef.current
-    if (active) {
-      active.oscillator.frequency.setTargetAtTime(nextFrequency, active.context.currentTime, 0.025)
-      active.gain.gain.setTargetAtTime(0.018 + (1 - y) * 0.012, active.context.currentTime, 0.04)
-    }
-  }
-
-  function startFrequency(event: PointerEvent<HTMLDivElement>) {
-    event.currentTarget.setPointerCapture(event.pointerId)
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext
-    const context = new AudioContextClass()
-    const oscillator = context.createOscillator()
-    const gain = context.createGain()
-    oscillator.type = 'sine'
-    gain.gain.value = 0.0001
-    oscillator.connect(gain).connect(context.destination)
-    oscillator.start()
-    audioRef.current = { context, oscillator, gain }
-    updateFrequency(event)
-  }
-
-  function stopFrequency(event: PointerEvent<HTMLDivElement>) {
-    if (!audioRef.current) return
-    const { context, oscillator, gain } = audioRef.current
-    gain.gain.setTargetAtTime(0.0001, context.currentTime, 0.04)
-    oscillator.stop(context.currentTime + 0.18)
-    void context.close()
-    audioRef.current = null
-    event.currentTarget.releasePointerCapture?.(event.pointerId)
-  }
 
   return (
     <section id="top" className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-5 sm:pb-14 sm:pt-12 md:px-8 md:pb-20 md:pt-16">
@@ -74,7 +34,7 @@ export function Hero() {
           <div className="carbon-surface flex h-full flex-col justify-between gap-5 border border-border p-4 sm:p-5">
             <div className="flex items-center justify-between">
               <span className="label-mono text-lime">{t.signal}</span>
-              <span className="label-mono text-muted-foreground">{frequency} Hz</span>
+              <span className="label-mono text-muted-foreground">SIGNAL v1</span>
             </div>
             {/* signature live equalizer */}
             <div className="flex h-24 items-end gap-1 sm:h-28" aria-hidden="true">
@@ -93,29 +53,6 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* wide interactive frequency console */}
-      <Reveal delay={160} className="mt-10 sm:mt-14">
-        <div
-          role="application"
-          aria-label="Interactive frequency controller"
-          className="group relative aspect-[16/7] cursor-crosshair touch-none overflow-hidden border border-border bg-blue outline-none focus-visible:ring-2 focus-visible:ring-lime"
-          style={{ '--frequency': `${frequency}Hz` } as CSSProperties}
-          onPointerDown={startFrequency}
-          onPointerMove={(event) => { if (event.buttons) updateFrequency(event) }}
-          onPointerUp={stopFrequency}
-          onPointerCancel={stopFrequency}
-          tabIndex={0}
-        >
-          <div className="pointer-events-none absolute inset-0 bg-background/20" aria-hidden="true" />
-          <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-lime/70" aria-hidden="true" />
-          <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px origin-bottom bg-background/60 transition-transform duration-75" style={{ transform: `rotate(${(frequency - 520) / 8}deg)` }} aria-hidden="true" />
-          <span className="label-mono absolute left-4 top-4 text-background">{t.frequency}</span>
-          <span className="label-mono absolute right-4 top-4 text-background/70">drag / feel</span>
-          <span className="label-mono absolute bottom-4 left-4 text-background/70">60 / 24000 Hz</span>
-          <span className="label-mono absolute bottom-4 right-4 text-lime">LIVE TRANSLATION</span>
-        </div>
-      </Reveal>
-
       {/* SIGNAL — live drum machine + looper */}
       <DrumMachine />
 
@@ -123,7 +60,7 @@ export function Hero() {
       <Reveal delay={220} className="mt-10 border-t border-border pt-8 sm:mt-14">
         <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
           <dl className="grid grid-cols-3 gap-4 sm:gap-8">
-            {[['20 Hz – 20 kHz', t.frequency], ['∞', t.titleEnd], ['2026', t.eyebrow]].map(([value, label]) => (
+            {[['20 Hz - 20 kHz', t.frequency], ['∞', t.titleEnd], ['2026', t.eyebrow]].map(([value, label]) => (
               <div key={value} className="border-l border-lime/40 pl-3 sm:pl-4">
                 <dt className="display text-2xl font-extrabold leading-none tracking-tight text-foreground sm:text-4xl">{value}</dt>
                 <dd className="label-mono mt-2 text-muted-foreground">{label}</dd>
