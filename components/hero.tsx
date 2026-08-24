@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
 import { DrumMachine } from './drum-machine'
@@ -107,7 +106,6 @@ export function Hero() {
           onPointerCancel={stopFrequency}
           tabIndex={0}
         >
-          <Image src="/images/spectrogram.png" alt={t.alt} fill priority sizes="(max-width: 1152px) 100vw, 1088px" className="object-cover opacity-80 mix-blend-screen transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
           <div className="pointer-events-none absolute inset-0 bg-background/20" aria-hidden="true" />
           <div className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-lime/70" aria-hidden="true" />
           <div className="pointer-events-none absolute bottom-0 left-1/2 top-0 w-px origin-bottom bg-background/60 transition-transform duration-75" style={{ transform: `rotate(${(frequency - 520) / 8}deg)` }} aria-hidden="true" />
