@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
+import { DrumMachine } from './drum-machine'
 import { useRef, useState, type CSSProperties, type PointerEvent } from 'react'
 
 const EQ_BARS = Array.from({ length: 24 })
@@ -116,6 +117,9 @@ export function Hero() {
           <span className="label-mono absolute bottom-4 right-4 text-lime">LIVE TRANSLATION</span>
         </div>
       </Reveal>
+
+      {/* SIGNAL — live drum machine + looper */}
+      <DrumMachine />
 
       {/* bottom action + metrics */}
       <Reveal delay={220} className="mt-10 border-t border-border pt-8 sm:mt-14">
