@@ -1,6 +1,7 @@
 import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
 import { ProcessSteps } from '@/components/process-steps'
+import { CreativeProjects } from '@/components/creative-projects'
 import { SoundSkin } from '@/components/sound-skin'
 import { Analyse } from '@/components/analyse'
 import { ShapeYourSound } from '@/components/shape-your-sound'
@@ -16,6 +17,7 @@ export default function Page() {
         <SiteHeader />
         <Hero />
         <ProcessSteps />
+        <CreativeProjects />
         <SoundSkin />
         <Analyse />
         <ShapeYourSound />
