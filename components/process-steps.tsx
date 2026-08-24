@@ -63,7 +63,7 @@ export function ProcessSteps() {
       </div>
 
       <Reveal delay={260}>
-        <div className="relative mt-3 flex min-h-40 items-center justify-between overflow-hidden border border-purple/40 bg-purple p-6 shadow-[0_24px_80px_oklch(0.58_0.25_305/22%)] sm:min-h-44 sm:p-8">
+        <div className="relative mt-3 flex min-h-40 items-center justify-between overflow-hidden border border-purple/30 bg-purple/55 p-6 shadow-[0_24px_80px_oklch(0.52_0.085_315/14%)] sm:min-h-44 sm:p-8">
           <span className="display whitespace-pre-line text-3xl font-extrabold leading-none text-foreground sm:text-5xl">
             {t.accent}
           </span>

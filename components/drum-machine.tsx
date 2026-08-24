@@ -620,7 +620,7 @@ function MiniSpec({ ready }: { ready: boolean }) {
         canvas.height = Math.floor(h * dpr)
       }
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      ctx.fillStyle = '#0a0a0a'
+      ctx.fillStyle = '#0d0b0e'
       ctx.fillRect(0, 0, w, h)
       const an = getAnalyser()
       if (an && ready) {
@@ -628,7 +628,7 @@ function MiniSpec({ ready }: { ready: boolean }) {
         an.getByteFrequencyData(bins)
         const n = bins.length
         const barW = w / n
-        ctx.fillStyle = 'oklch(0.895 0.19 118)'
+        ctx.fillStyle = 'oklch(0.78 0.105 120)'
         for (let i = 0; i < n; i++) {
           const nrm = bins[i] / 255
           if (nrm < 0.04) continue
