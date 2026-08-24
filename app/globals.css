@@ -320,6 +320,65 @@
   50% { opacity: 1; transform: scale(1); }
 }
 
+.agency-glitch {
+  position: relative;
+  display: inline-block;
+  color: white;
+  font-family: var(--font-plex-mono), ui-monospace, monospace;
+  font-size: 0.82rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.42em;
+  text-indent: 0.42em;
+  text-transform: uppercase;
+}
+
+.agency-glitch::before,
+.agency-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background: var(--background);
+}
+
+.agency-glitch::before {
+  color: var(--pink);
+  text-shadow: 2px 0 var(--lime);
+  transform: translate(2px, -1px);
+  clip-path: inset(0 0 58% 0);
+  animation: agency-glitch-top 3.2s steps(1, end) infinite;
+}
+
+.agency-glitch::after {
+  color: var(--lime);
+  text-shadow: -2px 0 var(--purple);
+  transform: translate(-2px, 1px);
+  clip-path: inset(62% 0 0 0);
+  animation: agency-glitch-bottom 2.7s steps(1, end) infinite;
+}
+
+.agency-glitch--small {
+  font-size: 0.58rem;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+}
+
+@keyframes agency-glitch-top {
+  0%, 86%, 100% { transform: translate(0); opacity: 0; }
+  88% { transform: translate(3px, -1px); opacity: 0.9; }
+  90% { transform: translate(-2px, 1px); opacity: 0.75; }
+  92% { transform: translate(1px, 0); opacity: 0; }
+}
+
+@keyframes agency-glitch-bottom {
+  0%, 72%, 100% { transform: translate(0); opacity: 0; }
+  74% { transform: translate(-3px, 1px); opacity: 0.9; }
+  77% { transform: translate(2px, -1px); opacity: 0.8; }
+  80% { transform: translate(0); opacity: 0; }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(20px);
@@ -421,7 +480,7 @@
   .reveal, .reveal.is-visible { opacity: 1; transform: none; transition: none; }
   .signal-scan::after { display: none; animation: none; }
   .eq-bar { animation: none; transform: scaleY(0.6); }
-  .timeline-track::after, .node-pulse, .marquee-track, .brand-lockup { animation: none; }
+  .timeline-track::after, .node-pulse, .marquee-track, .brand-lockup, .agency-glitch::before, .agency-glitch::after { animation: none; }
   .marquee-track { transform: none; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
