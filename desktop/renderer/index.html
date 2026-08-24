@@ -12,15 +12,12 @@
 <body>
 
 <canvas id="bg"></canvas>
-<div class="grain"></div>
-<div class="scanlines"></div>
 
 <div class="shell" id="shell">
   <div class="parallax">
     <div class="wordmark">IM TRYING<br>TO DESIGN</div>
     <div class="tag">DIGITAL SYSTEMS / CREATIVE TECHNOLOGY / AI</div>
   </div>
-  <div class="spine"></div>
   <div class="core">
     <span class="ring"></span>
     <div><small>I/TD SPINE</small><b id="coreCount">17</b><small id="coreLabel">CONNECTED SCREENS</small></div>
@@ -28,7 +25,14 @@
   <div id="nodes"></div>
 </div>
 
-<nav class="filters" id="filters" aria-label="Фильтры"></nav>
+<aside class="dock" id="dock" aria-label="Фильтры">
+  <header class="dock-head">
+    <span class="dock-title">FILTERS</span>
+    <button class="dock-reset" id="dockReset" type="button">СБРОС</button>
+  </header>
+  <div class="dock-body" id="dockBody"></div>
+  <footer class="dock-foot"><span id="dockCount">17 / 17</span></footer>
+</aside>
 
 <div class="ui">
   <header class="top">
@@ -53,8 +57,9 @@
 
   <footer class="detail" id="detail">
     <span class="n" id="count">01 / 17</span>
-    <div>
+    <div class="detail-body">
       <div class="detail-title" id="detailTitle">HOME / WEB OS</div>
+      <p class="detail-desc" id="detailDesc"></p>
       <small id="detailMeta">SYSTEM · JAVASCRIPT · PRIVATE</small>
     </div>
     <div class="detail-actions">
@@ -63,7 +68,7 @@
     </div>
   </footer>
 
-  <div class="hint" id="hint">WHEEL / DRAG — DESCEND THE SPINE · CTRL+K — COMMANDS · F1 — KEYS</div>
+  <div class="hint" id="hint">КОЛЕСО / ПЕРЕТАСКИВАНИЕ — ДВИГАТЬ ЛУЧ · CTRL+K — КОМАНДЫ · F1 — КЛАВИШИ</div>
 </div>
 
 <section class="gridview" id="gridView" aria-label="Сетка проектов">
@@ -71,7 +76,6 @@
     <h2>ALL SCREENS</h2>
     <span id="gridCount">17 PROJECTS</span>
     <span id="gridFilter">FILTER · ALL</span>
-    <div class="grid-filters" id="gridFilters"></div>
   </div>
   <div class="grid-cards" id="gridCards"></div>
 </section>

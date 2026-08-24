@@ -8,7 +8,16 @@
   const UI = window.ITD_UI;
   const SPIRAL = window.ITD_SPIRAL;
 
-  const settings = { sound: false, filter: 'ALL', quality: 0.55, cursor: true };
+  const settings = {
+    sound: false,
+    quality: 0.55,
+    cursor: true,
+    theme: 'violet',
+    background: 0,
+    scale: 1,
+    dock: true,
+    facets: null
+  };
   let saveTimer = 0;
 
   function save() {
@@ -98,7 +107,7 @@
     id: 'view.quality',
     name: 'ФОН: КАЧЕСТВО / ПРОИЗВОДИТЕЛЬНОСТЬ',
     run: () => {
-      settings.quality = settings.quality >= 0.8 ? 0.35 : settings.quality >= 0.5 ? 0.9 : 0.55;
+      settings.quality = settings.quality >= 0.8 ? 0.35 : settings.quality >= 0.5 ? 0.95 : 0.55;
       window.ITD_BG.quality(settings.quality);
       save();
       UI.toast(`ФОН · ${Math.round(settings.quality * 100)}%`);
@@ -114,6 +123,13 @@
       save();
       UI.toast(settings.cursor ? 'КУРСОР: НЕОН' : 'КУРСОР: СИСТЕМНЫЙ');
     }
+  });
+
+  UI.register({
+    id: 'ui.dock.persist',
+    name: 'ПАНЕЛЬ ФИЛЬТРОВ: ЗАПОМНИТЬ',
+    hidden: true,
+    run: () => {}
   });
 
   UI.register({ id: 'app.reload', name: 'ПЕРЕЗАГРУЗИТЬ', keys: 'CTRL+R', run: () => location.reload() });
@@ -145,6 +161,12 @@
       case 'End': SPIRAL.last(); return;
       case 'Enter': UI.run('project.open'); return;
       case 'KeyG': UI.run('view.grid'); return;
+      case 'KeyB': UI.run('ui.theme'); return;
+      case 'KeyD':
+        UI.run('ui.dock');
+        settings.dock = !document.body.classList.contains('no-dock');
+        save();
+        return;
       case 'KeyT': case 'Space': e.preventDefault(); UI.run('view.tour'); return;
       case 'KeyM': UI.run('audio.toggle'); return;
       case 'KeyP': UI.run('window.pin'); return;
@@ -173,9 +195,7 @@
     if (typeof settings.quality === 'number') window.ITD_BG.quality(settings.quality);
     if (settings.cursor === false) body.classList.add('no-custom-cursor');
 
-    UI.boot();
-
-    if (settings.filter && settings.filter !== 'ALL') UI.setFilter(settings.filter);
+    UI.boot(settings);
     UI.setRailIcon('audio.toggle', settings.sound ? 'sound' : 'mute');
 
     let step = 0;
@@ -198,10 +218,14 @@
     }, 260);
   }
 
-  // remember the last filter the user picked — the rail, the grid chips and the
-  // palette all land here, so this catches every path
+  // every filter path — dock, reset, palette — lands on this event
   addEventListener('itd:filter', (e) => {
-    settings.filter = e.detail.key;
+    settings.facets = e.detail.facets;
+    save();
+  });
+
+  addEventListener('itd:appearance', (e) => {
+    Object.assign(settings, e.detail);
     save();
   });
 
