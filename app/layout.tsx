@@ -17,7 +17,7 @@ const plexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'brandcultura — SHAPE YOUR SOUND',
+  title: 'brandcultura — SHAPE YOUR SOUND · SIGNAL',
   description:
     'Agentur für Künstler:innen und Labels. Wir lesen Spektrogramme, zerlegen Frequenzen und geben dem Sound eine Form, die bleibt.',
   generator: 'v0.app',
