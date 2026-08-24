@@ -560,10 +560,11 @@
     else { window.ITD_AUDIO.close(); window.ITD_SPIRAL.nudge(); }
   }
 
-  function setDock(on) {
+  function setDock(on, announce) {
     body.classList.toggle('no-dock', !on);
     requestAnimationFrame(() => window.ITD_SPIRAL.remeasure());
     setTimeout(() => window.ITD_SPIRAL.remeasure(), 480);
+    if (announce) dispatchEvent(new CustomEvent('itd:dock', { detail: { on } }));
   }
 
   /* ------------------------------------------------------------ tour */
@@ -705,7 +706,7 @@
   register({ id: 'view.grid', name: 'СЕТКА / СПИРАЛЬ', keys: 'G', run: () => setGrid(!state.grid) });
   register({ id: 'ui.search', name: 'ПОИСК ПРОЕКТА', keys: '/', run: () => setSearching(!body.classList.contains('searching')) });
   register({ id: 'ui.theme', name: 'ТЕМА И ФОН', keys: 'B', run: () => (state.panel === 'theme' ? closePanel() : showTheme()) });
-  register({ id: 'ui.dock', name: 'ПАНЕЛЬ ФИЛЬТРОВ', keys: 'D', run: () => setDock(body.classList.contains('no-dock')) });
+  register({ id: 'ui.dock', name: 'ПАНЕЛЬ ФИЛЬТРОВ', keys: 'D', run: () => setDock(body.classList.contains('no-dock'), true) });
   register({ id: 'filter.reset', name: 'СБРОСИТЬ ФИЛЬТРЫ', run: resetFacets });
   register({ id: 'view.tour', name: 'АВТО-ТУР', keys: 'T', run: () => setTour(!state.tour) });
   register({ id: 'project.info', name: 'КАРТОЧКА ПРОЕКТА', keys: 'I', run: () => (state.panel === 'project' ? closePanel() : showProjectInfo()) });

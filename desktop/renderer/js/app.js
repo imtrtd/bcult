@@ -125,13 +125,6 @@
     }
   });
 
-  UI.register({
-    id: 'ui.dock.persist',
-    name: 'ПАНЕЛЬ ФИЛЬТРОВ: ЗАПОМНИТЬ',
-    hidden: true,
-    run: () => {}
-  });
-
   UI.register({ id: 'app.reload', name: 'ПЕРЕЗАГРУЗИТЬ', keys: 'CTRL+R', run: () => location.reload() });
   UI.register({ id: 'app.quit', name: 'ВЫЙТИ', keys: 'CTRL+Q', run: () => api && api.close() });
 
@@ -162,11 +155,7 @@
       case 'Enter': UI.run('project.open'); return;
       case 'KeyG': UI.run('view.grid'); return;
       case 'KeyB': UI.run('ui.theme'); return;
-      case 'KeyD':
-        UI.run('ui.dock');
-        settings.dock = !document.body.classList.contains('no-dock');
-        save();
-        return;
+      case 'KeyD': UI.run('ui.dock'); return;
       case 'KeyT': case 'Space': e.preventDefault(); UI.run('view.tour'); return;
       case 'KeyM': UI.run('audio.toggle'); return;
       case 'KeyP': UI.run('window.pin'); return;
@@ -226,6 +215,13 @@
 
   addEventListener('itd:appearance', (e) => {
     Object.assign(settings, e.detail);
+    save();
+  });
+
+  // fires for every path that toggles the dock — the D key, the palette
+  // command — so a palette-driven hide/show persists just like the shortcut
+  addEventListener('itd:dock', (e) => {
+    settings.dock = e.detail.on;
     save();
   });
 
