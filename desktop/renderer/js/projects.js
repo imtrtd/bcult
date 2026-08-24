@@ -17,7 +17,7 @@ window.ITD_PROJECTS = [
   { title: "BRANDCULTURA LANDING",  description: "Посадочная страница бренда Brandcultura на статическом HTML.",          category: "BRAND",      stack: "HTML",       access: "PUBLIC",  status: "live" },
   { title: "NAMENLOS WEBSITE",      description: "Сайт Namenlos: витрина бренда, вёрстка без фреймворков.",               category: "BRAND",      stack: "HTML",       access: "PRIVATE", status: "live" },
   { title: "IMTRTD WEB",            description: "Основной веб-проект I/TD на TypeScript, публичный репозиторий.",        category: "BRAND",      stack: "TYPESCRIPT", access: "PUBLIC",  status: "live" },
-  { title: "CUEBOX",                description: "Продукт Cuebox — первая публичная версия на TypeScript.",               category: "PRODUCT",    stack: "TYPESCRIPT", access: "PUBLIC",  status: "live" },
+  { title: "CUEBOX",                description: "Продукт Cuebox — первая публичная версия на TypeScript.",               category: "PRODUCT",    stack: "TYPESCRIPT", access: "PUBLIC",  status: "live", url: "https://app.imtryingtodesign.com/" },
   { title: "TATTOO DESIGN EDITOR",  description: "Редактор эскизов татуировок: холст, слои, экспорт.",                    category: "PRODUCT",    stack: "TYPESCRIPT", access: "PRIVATE", status: "live" },
   { title: "EVE SLACK AGENT",       description: "Агент EVE для Slack: команды, ответы, интеграции. Сейчас на паузе.",    category: "AI",         stack: "TYPESCRIPT", access: "PUBLIC",  status: "paused" },
   { title: "EVE CHAT",              description: "Чат-интерфейс к агенту EVE, закрытая разработка.",                      category: "AI",         stack: "TYPESCRIPT", access: "PRIVATE", status: "offline" },
