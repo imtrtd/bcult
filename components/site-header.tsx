@@ -23,7 +23,7 @@ export function SiteHeader() {
           <span className="font-display text-base font-bold tracking-tight text-foreground sm:text-lg">
             brand<span className="text-pink">cultura</span>
           </span>
-          <span className="label-mono hidden text-muted-foreground xl:inline">agency</span>
+          <span className="agency-glitch agency-glitch--small hidden xl:inline" data-text="AGENCY">AGENCY</span>
         </a>
         <nav className="hidden items-center gap-6 xl:gap-7 lg:flex" aria-label={copy.nav.aria}>{labels.map((label, i) => <a key={HREFS[i]} href={HREFS[i]} className="label-mono text-muted-foreground transition-colors hover:text-foreground">{label}</a>)}</nav>
         <div className="flex items-center gap-3">
