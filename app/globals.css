@@ -12,8 +12,8 @@
   --color-lime-foreground: var(--lime-foreground);
   --color-blue: var(--blue);
   --color-orange: var(--orange);
-  --color-gold: var(--gold);
-  --color-cobalt: var(--cobalt);
+  --color-pink: var(--pink);
+  --color-purple: var(--purple);
   --color-ink: var(--ink);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -57,12 +57,12 @@
 
 :root {
   color-scheme: dark;
-  --background: oklch(0.115 0.008 255);
-  --foreground: oklch(0.93 0.012 90);
-  --card: oklch(0.17 0.01 255);
-  --card-foreground: oklch(0.93 0.012 90);
-  --popover: oklch(0.17 0.01 255);
-  --popover-foreground: oklch(0.93 0.012 90);
+  --background: oklch(0.075 0.004 290);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.125 0.012 290);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.125 0.012 290);
+  --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.895 0.19 118);
   --primary-foreground: oklch(0.16 0.03 118);
   --secondary: oklch(0.24 0 0);
@@ -72,13 +72,13 @@
   --accent: oklch(0.24 0 0);
   --accent-foreground: oklch(0.93 0.012 90);
   --destructive: oklch(0.62 0.21 32);
-  --border: oklch(0.88 0.03 82 / 16%);
+  --border: oklch(1 0 0 / 14%);
   --input: oklch(1 0 0 / 14%);
   --ring: oklch(0.895 0.19 118);
   --lime: oklch(0.88 0.2 120);
-  --gold: oklch(0.78 0.09 82);
-  --cobalt: oklch(0.62 0.22 260);
-  --ink: oklch(0.095 0.012 255);
+  --pink: oklch(0.72 0.25 350);
+  --purple: oklch(0.58 0.25 305);
+  --ink: oklch(0.055 0.008 290);
   --lime-foreground: oklch(0.16 0.03 118);
   --blue: oklch(0.52 0.24 274);
   --orange: oklch(0.63 0.2 32);
@@ -100,11 +100,11 @@
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.115 0.008 255);
+  --background: oklch(0.075 0.004 290);
   --foreground: oklch(0.985 0 0);
-  --card: oklch(0.17 0.01 255);
+  --card: oklch(0.125 0.012 290);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.17 0.01 255);
+  --popover: oklch(0.125 0.012 290);
   --popover-foreground: oklch(0.985 0 0);
   --primary: oklch(0.922 0 0);
   --primary-foreground: oklch(0.205 0 0);
@@ -115,7 +115,7 @@
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(0.88 0.03 82 / 16%);
+  --border: oklch(1 0 0 / 14%);
   --input: oklch(1 0 0 / 15%);
   --ring: oklch(0.556 0 0);
   --chart-1: oklch(0.87 0 0);
@@ -136,11 +136,11 @@
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
     color-scheme: dark;
-    --background: oklch(0.115 0.008 255);
+    --background: oklch(0.075 0.004 290);
     --foreground: oklch(0.985 0 0);
-    --card: oklch(0.17 0.01 255);
+    --card: oklch(0.125 0.012 290);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.17 0.01 255);
+    --popover: oklch(0.125 0.012 290);
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.922 0 0);
     --primary-foreground: oklch(0.205 0 0);
@@ -151,7 +151,7 @@
     --accent: oklch(0.269 0 0);
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(0.88 0.03 82 / 16%);
+    --border: oklch(1 0 0 / 14%);
     --input: oklch(1 0 0 / 15%);
     --ring: oklch(0.556 0 0);
     --chart-1: oklch(0.87 0 0);
@@ -272,10 +272,10 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border: 1px solid oklch(0.78 0.09 82 / 22%);
+  border: 1px solid oklch(0.72 0.25 350 / 24%);
   background:
-    linear-gradient(145deg, oklch(0.78 0.09 82 / 7%), transparent 34%),
-    linear-gradient(325deg, oklch(0.62 0.22 260 / 8%), transparent 42%),
+    linear-gradient(145deg, oklch(0.72 0.25 350 / 9%), transparent 34%),
+    linear-gradient(325deg, oklch(0.58 0.25 305 / 11%), transparent 42%),
     var(--card);
   box-shadow: inset 0 1px 0 oklch(1 0 0 / 6%), 0 24px 70px oklch(0 0 0 / 24%);
 }
@@ -285,7 +285,7 @@
   box-shadow:
     inset 0 0 0 1px oklch(1 0 0 / 4%),
     0 28px 80px oklch(0 0 0 / 38%),
-    0 0 50px oklch(0.62 0.22 260 / 7%);
+    0 0 56px oklch(0.72 0.25 350 / 9%);
 }
 
 .image-stage::before {
@@ -294,17 +294,18 @@
   inset: 12px;
   z-index: 8;
   pointer-events: none;
-  border: 1px solid oklch(0.78 0.09 82 / 32%);
+  border: 1px solid oklch(0.72 0.25 350 / 38%);
 }
 
 .image-luxe-overlay {
   background:
     linear-gradient(180deg, transparent 45%, oklch(0.095 0.012 255 / 88%) 100%),
-    linear-gradient(110deg, oklch(0.095 0.012 255 / 28%), transparent 48%, oklch(0.62 0.22 260 / 12%));
+    linear-gradient(110deg, oklch(0.055 0.008 290 / 30%), transparent 45%, oklch(0.72 0.25 350 / 14%)),
+    linear-gradient(25deg, oklch(0.58 0.25 305 / 14%), transparent 42%);
 }
 
 .luxe-rule {
-  background: linear-gradient(90deg, var(--gold), oklch(0.62 0.22 260 / 70%), transparent);
+  background: linear-gradient(90deg, var(--pink), var(--purple), var(--lime), transparent);
 }
 
 .reveal {
