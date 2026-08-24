@@ -42,7 +42,7 @@ export function SoundSkin() {
         <Reveal>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <span className="label-mono text-gold">{t.label}</span>
+              <span className="label-mono text-pink">{t.label}</span>
               <h2
                 id="sound-skin-heading"
                 className="display mt-4 max-w-3xl text-pretty text-4xl font-bold text-foreground sm:text-5xl md:text-6xl"
@@ -62,7 +62,7 @@ export function SoundSkin() {
               aria-label={`${t.alt}. Click to hear a subtle signal.`}
               onClick={playSignal}
               onKeyDown={handleVisualKeyDown}
-              className="image-stage signal-scan group relative aspect-[4/3] cursor-pointer overflow-hidden border border-gold/20 outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:aspect-auto lg:h-full lg:min-h-[26rem]"
+              className="image-stage signal-scan group relative aspect-[4/3] cursor-pointer overflow-hidden border border-pink/20 outline-none focus-visible:ring-2 focus-visible:ring-pink focus-visible:ring-offset-2 focus-visible:ring-offset-background lg:aspect-auto lg:h-full lg:min-h-[26rem]"
             >
               <Image
                 src="/images/sound-skin-waveform.png"
@@ -83,7 +83,7 @@ export function SoundSkin() {
                   return (
                     <span
                       key={i}
-                      className={`eq-bar block flex-1 rounded-sm ${i % 7 === 0 ? 'bg-cobalt/80' : 'bg-gold/70'}`}
+                      className={`eq-bar block flex-1 rounded-sm ${i % 7 === 0 ? 'bg-purple/90' : i % 3 === 0 ? 'bg-pink/80' : 'bg-lime/75'}`}
                       style={{
                         height: `${base}%`,
                         animationDelay: `${(i % 9) * 90}ms`,
@@ -94,7 +94,7 @@ export function SoundSkin() {
                 })}
               </div>
 
-              <span className="label-mono absolute right-4 top-4 z-10 border border-gold/40 bg-background/75 px-3 py-2 text-gold backdrop-blur-md">
+              <span className="label-mono absolute right-4 top-4 z-10 border border-pink/40 bg-background/75 px-3 py-2 text-pink backdrop-blur-md">
                 {t.cue}
               </span>
             </div>
@@ -103,14 +103,14 @@ export function SoundSkin() {
           <Reveal delay={120} className="flex flex-col justify-center">
             <h3 className="text-2xl font-semibold leading-tight text-foreground">{t.subtitle}</h3>
             <p className="mt-4 text-pretty leading-relaxed text-muted-foreground">
-              {t.body} <span className="text-gold">{t.emphasis}</span>
+              {t.body} <span className="text-pink">{t.emphasis}</span>
             </p>
 
             {/* metrics strip */}
             <dl className="mt-7 grid grid-cols-3 gap-px overflow-hidden border border-border bg-border sm:mt-8">
               {t.metrics.map(([value, caption]) => (
                 <div key={caption} className="carbon-panel flex flex-col gap-1 p-3 sm:p-4">
-                  <dt className="display text-lg font-bold text-gold sm:text-2xl">{value}</dt>
+                  <dt className="display text-lg font-bold text-pink sm:text-2xl">{value}</dt>
                   <dd className="label-mono text-[0.6rem] leading-tight text-muted-foreground sm:text-[0.6875rem]">
                     {caption}
                   </dd>
@@ -127,11 +127,11 @@ export function SoundSkin() {
                 >
                   <span className="font-mono text-xs text-foreground sm:text-sm">{from}</span>
                   <span
-                    className="node-pulse h-1.5 w-1.5 rounded-full bg-cobalt"
+                    className="node-pulse h-1.5 w-1.5 rounded-full bg-purple"
                     style={{ animationDelay: `${index * 260}ms` }}
                     aria-hidden
                   />
-                  <span className="text-right font-mono text-xs text-gold sm:text-sm">{to}</span>
+                  <span className="text-right font-mono text-xs text-pink sm:text-sm">{to}</span>
                 </li>
               ))}
             </ul>
