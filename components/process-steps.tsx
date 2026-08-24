@@ -46,7 +46,7 @@ export function ProcessSteps() {
       <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 md:mt-6 md:grid-cols-3">
         {t.steps.map((step, i) => (
           <Reveal key={step[0]} delay={i * 90}>
-            <div className="carbon-panel flex min-h-full flex-col gap-4 p-5 transition-colors hover:border-lime sm:min-h-64 sm:p-6">
+            <div className="premium-panel flex min-h-full flex-col gap-4 p-5 transition-colors hover:border-gold sm:min-h-64 sm:p-6">
               <div className="flex items-center justify-between">
                 <span className="node-pulse grid h-8 w-8 place-items-center rounded-full border border-lime font-mono text-xs text-lime md:hidden">
                   {step[0]}
@@ -54,26 +54,26 @@ export function ProcessSteps() {
                 <span className="label-mono hidden text-muted-foreground md:block">{step[0]}</span>
                 <span className="label-mono rounded-sm border border-border px-2 py-1 text-lime">{step[3]}</span>
               </div>
-              <h3 className="text-xl font-semibold leading-tight text-lime sm:text-2xl">{step[1]}</h3>
+              <h3 className="text-xl font-semibold leading-tight text-gold sm:text-2xl">{step[1]}</h3>
               <p className="text-sm leading-relaxed text-muted-foreground">{step[2]}</p>
-              <span className="mt-auto block h-1 w-full origin-left bg-gradient-to-r from-lime/70 to-transparent" aria-hidden />
+              <span className="luxe-rule mt-auto block h-px w-full origin-left" aria-hidden />
             </div>
           </Reveal>
         ))}
       </div>
 
       <Reveal delay={260}>
-        <div className="relative mt-3 flex min-h-40 items-center justify-between overflow-hidden bg-orange p-6 sm:min-h-44 sm:p-8">
-          <span className="display whitespace-pre-line text-3xl font-extrabold leading-none text-background sm:text-5xl">
+        <div className="relative mt-3 flex min-h-40 items-center justify-between overflow-hidden border border-cobalt/40 bg-cobalt p-6 shadow-[0_24px_80px_oklch(0.62_0.22_260/18%)] sm:min-h-44 sm:p-8">
+          <span className="display whitespace-pre-line text-3xl font-extrabold leading-none text-foreground sm:text-5xl">
             {t.accent}
           </span>
           <div className="flex h-full flex-col items-end justify-between gap-6 self-stretch">
-            <span className="label-mono text-background/80">DE 26</span>
+            <span className="label-mono text-gold">DE 26</span>
             <div className="flex items-end gap-[3px]" aria-hidden>
               {Array.from({ length: 10 }).map((_, i) => (
                 <span
                   key={i}
-                  className="eq-bar block w-1 rounded-sm bg-background/80"
+                  className="eq-bar block w-1 rounded-sm bg-gold/90"
                   style={{
                     height: `${16 + Math.abs(Math.sin(i * 1.7)) * 26}px`,
                     animationDelay: `${(i % 6) * 110}ms`,
