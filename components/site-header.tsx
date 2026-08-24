@@ -16,7 +16,7 @@ export function SiteHeader() {
           <div className="flex items-center border border-border" role="group" aria-label={copy.nav.language}>
             {(['de', 'en', 'ru'] as Locale[]).map((item) => <button key={item} type="button" onClick={() => setLocale(item)} aria-pressed={locale === item} className={`min-h-11 min-w-10 px-2 py-2 font-mono text-[11px] uppercase transition-colors ${locale === item ? 'bg-lime text-lime-foreground' : 'text-muted-foreground hover:text-foreground'}`}>{item}</button>)}
           </div>
-          <a href="#kontakt" className="hidden border border-lime/60 bg-lime px-4 py-2 text-sm font-semibold text-background transition-colors hover:bg-white sm:block">{copy.nav.start}</a>
+          <a href="#kontakt" className="hidden border border-lime/60 bg-lime px-4 py-2 text-sm font-semibold text-lime-foreground transition-colors hover:bg-white sm:block">{copy.nav.start}</a>
         </div>
       </div>
     </header>
