@@ -14,12 +14,12 @@ export function CreativeProjects() {
         <Reveal>
           <div className="grid gap-6 md:grid-cols-[0.72fr_1.28fr] md:items-end">
             <div>
-              <span className="label-mono text-gold">{t.label}</span>
+              <span className="label-mono text-pink">{t.label}</span>
               <p className="label-mono mt-4 text-muted-foreground">{t.kicker}</p>
             </div>
             <div>
               <h2 id="projects-heading" className="display max-w-4xl text-pretty text-4xl font-bold text-foreground sm:text-5xl md:text-7xl">
-                {t.title} <span className="text-gold">{t.titleAccent}</span>
+                {t.title} <span className="text-pink">{t.titleAccent}</span>
               </h2>
               <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
                 {t.intro}
@@ -41,7 +41,7 @@ export function CreativeProjects() {
               <div className="image-luxe-overlay absolute inset-0" aria-hidden />
               <div className="absolute inset-x-0 bottom-0 z-10 grid gap-3 p-4 sm:grid-cols-[1fr_auto] sm:items-end sm:p-6">
                 <p className="max-w-lg text-pretty text-sm leading-relaxed text-foreground/90 sm:text-base">{t.caption}</p>
-                <span className="label-mono w-fit border border-gold/40 bg-background/80 px-3 py-2 text-gold backdrop-blur-md">
+                <span className="label-mono w-fit border border-lime/50 bg-background/80 px-3 py-2 text-lime backdrop-blur-md">
                   {t.status}
                 </span>
               </div>
@@ -53,8 +53,8 @@ export function CreativeProjects() {
               <Reveal key={step[0]} delay={index * 90}>
                 <article className="premium-panel group flex h-full min-h-48 flex-col p-5 sm:p-6">
                   <div className="flex items-center justify-between">
-                    <span className="label-mono text-cobalt">{String(index + 1).padStart(2, '0')}</span>
-                    <span className="h-px w-10 bg-gold/60 transition-all duration-500 group-hover:w-16" aria-hidden />
+                    <span className="label-mono text-purple">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="h-px w-10 bg-pink/60 transition-all duration-500 group-hover:w-16" aria-hidden />
                   </div>
                   <h3 className="mt-8 text-xl font-semibold text-foreground">{step[0]}</h3>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step[1]}</p>
@@ -68,7 +68,7 @@ export function CreativeProjects() {
           <div className="mt-3 grid gap-px border border-border bg-border sm:grid-cols-3">
             {t.outcomes.map(([value, label]) => (
               <div key={label} className="bg-background p-5 sm:p-6">
-                <div className="display text-3xl font-bold text-gold sm:text-4xl">{value}</div>
+                <div className="display text-3xl font-bold text-lime sm:text-4xl">{value}</div>
                 <p className="label-mono mt-3 text-muted-foreground">{label}</p>
               </div>
             ))}
