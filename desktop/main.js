@@ -3,6 +3,7 @@
 const { app, BrowserWindow, Menu, ipcMain, shell, dialog, nativeTheme } = require('electron');
 const path = require('node:path');
 const fs = require('node:fs');
+const { exec } = require('node:child_process');
 
 const APP_ID = 'com.imtrtd.neonspiral';
 const BG = '#04040a';
@@ -135,6 +136,97 @@ function windowState() {
   };
 }
 
+/* ---------------------------------------------------------------- launcher */
+
+/** Wraps a bare name ("chrome", "msedge") so the OS resolves it the way a
+ * user's own shell would — Windows via the App Paths registry key that
+ * browser and chat-app installers register, so no hard-coded install
+ * directory is needed. */
+function shellCommand(value) {
+  const safe = String(value).replace(/"/g, '""');
+  if (process.platform === 'win32') return `start "" "${safe}"`;
+  if (process.platform === 'darwin') return `open -a "${safe}"`;
+  return `${safe} &`;
+}
+
+function runShell(command) {
+  return new Promise((resolve) => {
+    exec(command, { windowsHide: true, timeout: 8000 }, (error) => {
+      resolve(error ? { ok: false, error: String(error.message || error) } : { ok: true });
+    });
+  });
+}
+
+/** shell.openPath / shell.openExternal have no built-in timeout and can hang
+ * indefinitely when nothing on the system claims the path or protocol —
+ * bound every launch attempt so a bad target reads as "failed", not "stuck". */
+function withDeadline(promise, ms) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => setTimeout(() => resolve('__itd_timeout__'), ms))
+  ]);
+}
+
+async function launchTarget(spec) {
+  if (!spec || typeof spec !== 'object' || typeof spec.value !== 'string') {
+    return { ok: false, error: 'empty target' };
+  }
+  // every type but 'explorer' needs a real value — explorer falls back to
+  // the home folder, so an empty string there is a deliberate default, not
+  // a mistake
+  if (spec.type !== 'explorer' && !spec.value.trim()) {
+    return { ok: false, error: 'empty target' };
+  }
+  const value = spec.value.trim();
+  try {
+    switch (spec.type) {
+      case 'protocol':
+      case 'url': {
+        if (!/^[a-z][a-z0-9+.-]*:/i.test(value)) return { ok: false, error: 'not a URI' };
+        const r = await withDeadline(shell.openExternal(value), 6000);
+        return r === '__itd_timeout__' ? { ok: false, error: 'timeout' } : { ok: true };
+      }
+
+      case 'path': {
+        const err = await withDeadline(shell.openPath(value), 6000);
+        if (err === '__itd_timeout__') return { ok: false, error: 'timeout' };
+        return err ? { ok: false, error: err } : { ok: true };
+      }
+
+      case 'command':
+        return runShell(shellCommand(value));
+
+      case 'explorer': {
+        const target = value || app.getPath('home');
+        const err = await withDeadline(shell.openPath(target), 6000);
+        if (err === '__itd_timeout__') return { ok: false, error: 'timeout' };
+        return err ? { ok: false, error: err } : { ok: true };
+      }
+
+      default:
+        return { ok: false, error: 'unknown launch type' };
+    }
+  } catch (error) {
+    return { ok: false, error: String(error && error.message) };
+  }
+}
+
+async function pickAppPath() {
+  if (!win) return { ok: false };
+  const filters = process.platform === 'win32'
+    ? [{ name: 'Программы и ярлыки', extensions: ['exe', 'lnk'] }, { name: 'Все файлы', extensions: ['*'] }]
+    : [{ name: 'Все файлы', extensions: ['*'] }];
+  const { canceled, filePaths } = await dialog.showOpenDialog(win, {
+    title: 'Выберите приложение',
+    properties: ['openFile'],
+    filters
+  });
+  if (canceled || !filePaths.length) return { ok: false };
+  const chosen = filePaths[0];
+  const base = path.basename(chosen).replace(/\.(exe|lnk|app)$/i, '');
+  return { ok: true, path: chosen, name: base };
+}
+
 /* ---------------------------------------------------------------- snapshot */
 
 async function snapshot() {
@@ -234,6 +326,8 @@ if (!app.requestSingleInstanceLock()) {
     ipcMain.on('app:open-external', (_e, url) => {
       if (typeof url === 'string' && /^https?:\/\//i.test(url)) shell.openExternal(url);
     });
+    ipcMain.handle('app:launch', (_e, spec) => launchTarget(spec));
+    ipcMain.handle('app:pick-path', () => pickAppPath());
 
     buildMenu();
     createWindow();

@@ -26,6 +26,8 @@ contextBridge.exposeInMainWorld('itd', {
   info: () => ipcRenderer.invoke('app:info'),
   settingsGet: () => ipcRenderer.invoke('app:settings-get'),
   settingsSet: (value) => ipcRenderer.invoke('app:settings-set', value),
+  launch: (spec) => ipcRenderer.invoke('app:launch', spec),
+  pickPath: () => ipcRenderer.invoke('app:pick-path'),
 
   platform: process.platform
 });

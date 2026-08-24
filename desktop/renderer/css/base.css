@@ -89,7 +89,7 @@ body.no-webgl .shell::before {
   transition: opacity .5s var(--ease), filter .5s var(--ease), left .45s var(--ease), right .45s var(--ease);
 }
 body.overlay .shell { opacity: .14; filter: blur(10px) saturate(.55); pointer-events: none; }
-body.grid .shell { opacity: 0; filter: blur(24px); pointer-events: none; }
+body.grid .shell, body.apps .shell { opacity: 0; filter: blur(24px); pointer-events: none; }
 
 .parallax {
   position: absolute;

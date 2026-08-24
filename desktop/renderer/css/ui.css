@@ -446,3 +446,182 @@ body.palette-open .palette { opacity: 1; transform: translateX(-50%) translateY(
   border: 2px solid transparent;
   background-clip: padding-box;
 }
+
+/* ============================================================ launcher */
+.launcherview {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  padding: calc(var(--tb) + 7vh) calc(var(--rail-w) + 2vw) 12vh calc(var(--dock-w) + 2.4vw);
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: none;
+  background:
+    radial-gradient(circle at 50% 0%, hsl(var(--h) var(--sat) 18%/.30), transparent 62%),
+    linear-gradient(180deg, rgba(4, 6, 14, .95), rgba(4, 6, 14, .97));
+  backdrop-filter: blur(10px);
+  transition: padding .45s var(--ease);
+}
+body.apps .launcherview { display: block; }
+#launcherHint { font-family: var(--mono); font-size: calc(8px * var(--ui)); letter-spacing: .2em; color: var(--dim); }
+
+.launcher-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(calc(148px * var(--ui)), 1fr));
+  gap: calc(14px * var(--ui));
+  align-items: start;
+}
+
+.tile {
+  --acc: hsl(var(--th, 284) var(--sat) 68%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(10px * var(--ui));
+  padding: calc(20px * var(--ui)) calc(10px * var(--ui)) calc(14px * var(--ui));
+  border: 1px solid rgba(198, 224, 255, .18);
+  border-top: calc(2px * var(--ui)) solid var(--acc);
+  background:
+    linear-gradient(157deg, rgba(196, 224, 255, .12), rgba(6, 11, 22, .5) 62%),
+    rgba(5, 9, 18, .58);
+  color: var(--ink);
+  cursor: none;
+  user-select: none;
+  box-shadow: inset 0 1px 0 rgba(226, 241, 255, .22);
+  transition: transform .2s var(--ease), box-shadow .2s, border-color .2s, opacity .2s;
+  touch-action: none;
+}
+.tile:hover { transform: translateY(-3px); box-shadow: 0 18px 46px rgba(0, 0, 0, .55), 0 0 26px hsl(var(--th, 284) var(--sat) 62%/.24), inset 0 1px 0 rgba(240, 250, 255, .4); }
+.tile.dragging { opacity: .28; }
+.tile.drop-target { border-color: rgba(240, 250, 255, .8); box-shadow: 0 0 0 2px hsl(var(--th, 284) var(--sat) 70%/.6), 0 0 30px hsl(var(--th, 284) var(--sat) 62%/.4); }
+
+.tile-icon {
+  width: calc(40px * var(--ui));
+  height: calc(40px * var(--ui));
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(198, 224, 255, .2);
+  background: hsl(var(--th, 284) var(--sat) 60%/.10);
+}
+.tile-icon svg { width: 58%; height: 58%; fill: none; stroke: var(--acc); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.tile-label { font-size: calc(10.5px * var(--ui)); letter-spacing: .03em; text-align: center; line-height: 1.2; }
+.tile-sub { font-family: var(--mono); font-size: calc(6.5px * var(--ui)); letter-spacing: .18em; color: var(--dim); }
+.tile-edit {
+  position: absolute;
+  top: calc(6px * var(--ui));
+  right: calc(6px * var(--ui));
+  width: calc(20px * var(--ui));
+  height: calc(20px * var(--ui));
+  display: grid;
+  place-items: center;
+  background: rgba(6, 10, 20, .7);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  opacity: 0;
+  cursor: none;
+  transition: opacity .2s, color .2s, border-color .2s;
+}
+.tile:hover .tile-edit { opacity: 1; }
+.tile-edit:hover { color: #fff; border-color: hsl(var(--h) var(--sat) 72%/.6); }
+.tile-edit svg { width: 60%; height: 60%; fill: none; stroke: currentColor; stroke-width: 1.3; }
+
+/* group tiles: a 2x2 collage standing in for the icon */
+.group-collage { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; width: calc(40px * var(--ui)); height: calc(40px * var(--ui)); border: 1px solid rgba(198, 224, 255, .2); padding: 2px; background: hsl(var(--th, 284) var(--sat) 60%/.08); }
+.group-collage i { display: grid; place-items: center; background: rgba(255, 255, 255, .03); }
+.group-collage i svg { width: 60%; height: 60%; fill: none; stroke: var(--acc); stroke-width: 1.3; }
+.group-count {
+  position: absolute;
+  bottom: calc(6px * var(--ui));
+  right: calc(6px * var(--ui));
+  font-family: var(--mono);
+  font-size: calc(7px * var(--ui));
+  padding: calc(2px * var(--ui)) calc(5px * var(--ui));
+  color: rgba(240, 248, 255, .85);
+  background: rgba(6, 10, 20, .75);
+  border: 1px solid var(--line);
+}
+
+/* an expanded group takes the full row and shows its children inline */
+.cluster {
+  grid-column: 1 / -1;
+  border: 1px solid hsl(var(--th, 284) var(--sat) 70%/.4);
+  background: linear-gradient(180deg, hsl(var(--th, 284) var(--sat) 30%/.12), rgba(5, 9, 18, .6));
+  padding: calc(14px * var(--ui));
+}
+.cluster-head { display: flex; align-items: center; gap: calc(12px * var(--ui)); margin-bottom: calc(12px * var(--ui)); }
+.cluster-title { font-size: calc(13px * var(--ui)); font-weight: 300; letter-spacing: .04em; }
+.cluster-actions { margin-left: auto; display: flex; gap: calc(8px * var(--ui)); }
+.cluster-actions button {
+  font-family: var(--mono);
+  font-size: calc(7.5px * var(--ui));
+  letter-spacing: .16em;
+  padding: calc(5px * var(--ui)) calc(9px * var(--ui));
+  border: 1px solid var(--line);
+  background: none;
+  color: var(--muted);
+  cursor: none;
+  transition: color .2s, border-color .2s, background .2s;
+}
+.cluster-actions button:hover { color: #fff; border-color: hsl(var(--h) var(--sat) 72%/.6); background: hsl(var(--h) var(--sat) 60%/.12); }
+.cluster-body { display: grid; grid-template-columns: repeat(auto-fill, minmax(calc(120px * var(--ui)), 1fr)); gap: calc(10px * var(--ui)); }
+.cluster-body .tile { padding: calc(14px * var(--ui)) calc(8px * var(--ui)) calc(10px * var(--ui)); }
+.cluster-body .tile-icon { width: calc(32px * var(--ui)); height: calc(32px * var(--ui)); }
+
+.add-tile {
+  border-style: dashed;
+  border-top-style: dashed;
+  align-items: center;
+  justify-content: center;
+  color: var(--dim);
+}
+.add-tile .tile-icon { border-style: dashed; background: none; }
+.add-tile:hover { color: rgba(255, 255, 255, .85); }
+
+.drag-ghost {
+  position: fixed;
+  z-index: 50;
+  pointer-events: none;
+  opacity: .9;
+  transform: translate(-50%, -50%) scale(1.04);
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, .6));
+}
+
+.preset-list { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); margin-top: calc(18px * var(--ui)); }
+.preset-row {
+  display: flex;
+  align-items: center;
+  gap: calc(12px * var(--ui));
+  padding: calc(11px * var(--ui)) calc(13px * var(--ui));
+  background: rgba(5, 9, 18, .86);
+  border: 0;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: calc(9.5px * var(--ui));
+  letter-spacing: .1em;
+  cursor: none;
+  text-align: left;
+  width: 100%;
+  transition: background .2s;
+}
+.preset-row:hover { background: hsl(var(--h) var(--sat) 60%/.12); }
+.preset-row svg { width: calc(16px * var(--ui)); height: calc(16px * var(--ui)); flex: none; fill: none; stroke: rgba(226, 240, 255, .8); stroke-width: 1.2; }
+.preset-row .name { flex: 1; }
+.preset-row .desc { font-size: calc(7.5px * var(--ui)); color: var(--dim); letter-spacing: .1em; }
+
+.field { margin-top: calc(16px * var(--ui)); }
+.field label { display: block; font-family: var(--mono); font-size: calc(7.5px * var(--ui)); letter-spacing: .22em; color: var(--dim); margin-bottom: calc(7px * var(--ui)); }
+.field input[type="text"] {
+  width: 100%;
+  padding: calc(10px * var(--ui)) calc(12px * var(--ui));
+  background: rgba(6, 10, 20, .6);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: calc(10px * var(--ui));
+  letter-spacing: .06em;
+  outline: none;
+}
+.field input[type="text"]:focus { border-color: hsl(var(--h) var(--sat) 72%/.6); }
+.field-row { display: flex; gap: calc(10px * var(--ui)); align-items: center; }
+.field-row .field { flex: 1; margin-top: 0; }

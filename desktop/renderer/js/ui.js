@@ -269,7 +269,8 @@
     shot: '<rect x="1.6" y="4.2" width="12.8" height="9.4"/><circle cx="8" cy="8.9" r="2.8"/><path d="M5.6 4.2l1.1-1.8h2.6l1.1 1.8"/>',
     pin: '<path d="M8 9.6V14"/><path d="M4.6 2.4h6.8l-1 3.1 2 2.2H3.6l2-2.2z"/>',
     info: '<circle cx="8" cy="8" r="6.4"/><path d="M8 7.2v4.2"/><circle cx="8" cy="4.9" r=".5"/>',
-    keys: '<rect x="1.6" y="4" width="12.8" height="8"/><path d="M4.2 6.6h.01M6.6 6.6h.01M9 6.6h.01M11.4 6.6h.01M4.8 9.4h6.4"/>'
+    keys: '<rect x="1.6" y="4" width="12.8" height="8"/><path d="M4.2 6.6h.01M6.6 6.6h.01M9 6.6h.01M11.4 6.6h.01M4.8 9.4h6.4"/>',
+    apps: '<rect x="1.6" y="1.6" width="4.6" height="4.6" rx=".5"/><rect x="9.8" y="1.6" width="4.6" height="4.6" rx=".5"/><rect x="1.6" y="9.8" width="4.6" height="4.6" rx=".5"/><circle cx="12.1" cy="12.1" r="2.3"/>'
   };
 
   function buildRail() {
@@ -277,6 +278,7 @@
     host.textContent = '';
     const spec = [
       { id: 'view.grid', icon: 'grid', tip: 'СЕТКА · G' },
+      { id: 'view.apps', icon: 'apps', tip: 'ПРИЛОЖЕНИЯ · L' },
       { id: 'ui.search', icon: 'search', tip: 'ПОИСК · /' },
       { rule: true },
       { id: 'view.tour', icon: 'tour', tip: 'АВТО-ТУР · T' },
@@ -369,7 +371,7 @@
 
   /* ------------------------------------------------------------ panels */
 
-  function openPanel(html, id) {
+  function openPanel(html, id, onMount) {
     $('panel').innerHTML = html;
     $('panel').classList.add('open');
     body.classList.add('overlay');
@@ -382,6 +384,7 @@
     for (const b of $('panel').querySelectorAll('[data-scale]')) b.addEventListener('click', () => setScale(Number(b.dataset.scale), true));
     const close = $('panel').querySelector('[data-close]');
     if (close) close.addEventListener('click', closePanel);
+    if (typeof onMount === 'function') onMount($('panel'));
   }
 
   function closePanel() {
@@ -389,7 +392,7 @@
     $('panel').classList.remove('open');
     body.classList.remove('overlay');
     state.panel = null;
-    window.ITD_SPIRAL.setEnabled(!state.grid);
+    window.ITD_SPIRAL.setEnabled(!state.grid && !body.classList.contains('apps'));
     window.ITD_AUDIO.close();
   }
 
@@ -452,6 +455,7 @@
       ['ENTER', 'открыть проект'],
       ['I', 'карточка проекта'],
       ['G', 'сетка / спираль'],
+      ['L', 'приложения (Telegram, браузеры…)'],
       ['/', 'поиск'],
       ['B', 'тема и фон'],
       ['D', 'скрыть / показать фильтры'],
@@ -551,11 +555,12 @@
   }
 
   function setGrid(on) {
+    if (on && window.ITD_LAUNCHER) window.ITD_LAUNCHER.close();
     state.grid = on;
     body.classList.toggle('grid', on);
     setRailOn('view.grid', on);
     $('modeLabel').textContent = on ? 'GRID' : 'SPIRAL';
-    window.ITD_SPIRAL.setEnabled(!on && !state.panel);
+    window.ITD_SPIRAL.setEnabled(!on && !state.panel && !body.classList.contains('apps'));
     if (on) { window.ITD_AUDIO.open(); $('gridView').scrollTop = 0; }
     else { window.ITD_AUDIO.close(); window.ITD_SPIRAL.nudge(); }
   }
@@ -730,7 +735,7 @@
     ALL, state, register, run, toast,
     setGrid, setTour, setSearching, setDock, setTheme, setBackground, setScale,
     resetFacets, applySet, appearance, serializeFacets,
-    openPalette, closePalette, closePanel, showAbout, showProjectInfo, showTheme,
+    openPalette, closePalette, openPanel, closePanel, showAbout, showProjectInfo, showTheme,
     setRailIcon, setRailOn,
     isOverlayOpen: () => !!state.panel || body.classList.contains('palette-open'),
     isSearching: () => body.classList.contains('searching'),

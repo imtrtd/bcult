@@ -16,7 +16,8 @@
     background: 0,
     scale: 1,
     dock: true,
-    facets: null
+    facets: null,
+    launcher: null
   };
   let saveTimer = 0;
 
@@ -31,6 +32,11 @@
     openExternal(url) {
       if (api) api.openExternal(url);
       else window.open(url, '_blank', 'noopener');
+    },
+    getLauncherSettings: () => settings.launcher,
+    setLauncherSettings(items) {
+      settings.launcher = Array.isArray(items) ? items : null;
+      save();
     },
     settings
   };
@@ -137,6 +143,7 @@
       if (UI.isOverlayOpen()) { UI.closePalette(); UI.closePanel(); }
       else if (UI.isSearching()) UI.setSearching(false);
       else if (UI.state.grid) UI.setGrid(false);
+      else if (body.classList.contains('apps')) window.ITD_LAUNCHER.close();
       else if (api) api.leaveFullscreen();
       return;
     }
@@ -154,6 +161,7 @@
       case 'End': SPIRAL.last(); return;
       case 'Enter': UI.run('project.open'); return;
       case 'KeyG': UI.run('view.grid'); return;
+      case 'KeyL': UI.run('view.apps'); return;
       case 'KeyB': UI.run('ui.theme'); return;
       case 'KeyD': UI.run('ui.dock'); return;
       case 'KeyT': case 'Space': e.preventDefault(); UI.run('view.tour'); return;
@@ -183,6 +191,7 @@
     }
     if (typeof settings.quality === 'number') window.ITD_BG.quality(settings.quality);
     if (settings.cursor === false) body.classList.add('no-custom-cursor');
+    window.ITD_LAUNCHER.boot();
 
     UI.boot(settings);
     UI.setRailIcon('audio.toggle', settings.sound ? 'sound' : 'mute');
