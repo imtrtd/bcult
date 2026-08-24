@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
 import { DrumMachine } from './drum-machine'
@@ -36,8 +37,18 @@ export function Hero() {
               <span className="label-mono text-pink">{t.signal}</span>
               <span className="label-mono text-muted-foreground">SIGNAL v1</span>
             </div>
+            <div className="relative mx-auto w-full max-w-[18rem] overflow-hidden sm:max-w-[20rem]">
+              <Image
+                src="/images/brandcultura-logo-web.webp"
+                alt="brandcultura agency"
+                width={1000}
+                height={1000}
+                priority
+                className="brand-lockup h-auto w-full object-contain mix-blend-screen"
+              />
+            </div>
             {/* signature live equalizer */}
-            <div className="flex h-24 items-end gap-1 sm:h-28" aria-hidden="true">
+            <div className="flex h-16 items-end gap-1 sm:h-20" aria-hidden="true">
               {EQ_BARS.map((_, i) => (
                 <span
                   key={i}
