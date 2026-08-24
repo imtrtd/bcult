@@ -37,15 +37,19 @@ export function Hero() {
               <span className="label-mono text-pink">{t.signal}</span>
               <span className="label-mono text-muted-foreground">SIGNAL v1</span>
             </div>
-            <div className="relative mx-auto w-full max-w-[18rem] overflow-hidden sm:max-w-[20rem]">
+            <div className="brand-lockup mx-auto flex w-full max-w-[21rem] flex-col items-center">
               <Image
-                src="/images/brandcultura-logo-web.webp"
-                alt="brandcultura agency"
-                width={1000}
-                height={1000}
+                src="/images/brandcultura-mark-web.webp"
+                alt=""
+                width={360}
+                height={360}
                 priority
-                className="brand-lockup h-auto w-full object-contain mix-blend-screen"
+                className="h-auto w-[62%] object-contain mix-blend-screen"
               />
+              <div className="mt-1 whitespace-nowrap font-display text-[clamp(1.65rem,4.2vw,2.65rem)] font-medium leading-none">
+                <span className="text-white">brand</span><span className="text-pink">cultura</span>
+              </div>
+              <span className="agency-glitch mt-3" data-text="AGENCY">AGENCY</span>
             </div>
             {/* signature live equalizer */}
             <div className="flex h-16 items-end gap-1 sm:h-20" aria-hidden="true">
