@@ -41,7 +41,7 @@
     { icon: 'app', title: 'ПРОИЗВОЛЬНОЕ', sub: 'ВЫБРАТЬ .EXE', th: 284, launch: 'pick' }
   ];
 
-  const makeTile = (p) => ({ id: uid('app'), kind: 'app', title: p.title, sub: p.sub, icon: p.icon, th: p.th, launch: p.launch || null });
+  const makeTile = (p) => ({ id: uid('app'), kind: 'app', title: p.title, sub: p.sub, icon: p.icon, th: p.th, launch: (p.launch && p.launch !== 'pick') ? p.launch : null });
 
   const defaults = () => PRESETS.filter((p) => p.launch !== 'pick').map(makeTile);
 
