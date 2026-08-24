@@ -5,6 +5,7 @@
  *   stack     — free text, shown in the meta line
  *   access    — PUBLIC / PRIVATE, shown in the meta line
  *   status    — "live"    → full neon treatment (working project)
+ *               "paused"  → amber, half-drained card (on hold, not dead)
  *               "offline" → muted, desaturated card (not working / not reachable)
  *   url       — optional. With it, OPEN PROJECT and Enter open the link in the browser.
  *   note      — optional line shown in the info panel (Enter / I).

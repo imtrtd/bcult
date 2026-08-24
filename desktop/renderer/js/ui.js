@@ -13,12 +13,17 @@
     category: String(p.category || 'MISC').toUpperCase(),
     stack: String(p.stack || '—').toUpperCase(),
     access: String(p.access || 'PRIVATE').toUpperCase(),
-    status: p.status === 'live' ? 'live' : 'offline',
+    status: ['live', 'paused', 'offline'].includes(p.status) ? p.status : 'offline',
     url: typeof p.url === 'string' && /^https?:\/\//i.test(p.url) ? p.url : '',
     note: typeof p.note === 'string' ? p.note : ''
   }));
 
   const state = { filter: 'ALL', query: '', tour: false, grid: false, panel: null };
+  const STATUS_TEXT = {
+    live: 'LIVE · РАБОЧИЙ',
+    paused: 'PAUSED · НА ПАУЗЕ',
+    offline: 'OFFLINE · НЕ РАБОТАЕТ'
+  };
   let tourTimer = 0;
 
   /* ------------------------------------------------------------ commands */
@@ -46,9 +51,10 @@
   /* ------------------------------------------------------------ working set */
 
   function matches(p) {
-    if (state.filter === 'LIVE' && p.status !== 'live') return false;
-    if (state.filter === 'OFFLINE' && p.status !== 'offline') return false;
-    if (state.filter !== 'ALL' && state.filter !== 'LIVE' && state.filter !== 'OFFLINE' && p.category !== state.filter) return false;
+    const STATES = ['LIVE', 'PAUSED', 'OFFLINE'];
+    if (STATES.includes(state.filter)) {
+      if (p.status !== state.filter.toLowerCase()) return false;
+    } else if (state.filter !== 'ALL' && p.category !== state.filter) return false;
     if (state.query) {
       const q = state.query.toUpperCase();
       if (!(p.title + ' ' + p.category + ' ' + p.stack + ' ' + p.access).includes(q)) return false;
@@ -85,8 +91,7 @@
   function countFor(key) {
     return ALL.filter((p) => {
       if (key === 'ALL') return true;
-      if (key === 'LIVE') return p.status === 'live';
-      if (key === 'OFFLINE') return p.status === 'offline';
+      if (['LIVE', 'PAUSED', 'OFFLINE'].includes(key)) return p.status === key.toLowerCase();
       return p.category === key;
     }).length;
   }
@@ -118,11 +123,12 @@
     categories().forEach((c) => add(c, c));
     rule();
     add('LIVE', 'LIVE');
+    add('PAUSED', 'PAUSED');
     add('OFFLINE', 'OFFLINE');
 
     const chips = $('gridFilters');
     chips.textContent = '';
-    for (const key of ['ALL', ...categories(), 'LIVE', 'OFFLINE']) {
+    for (const key of ['ALL', ...categories(), 'LIVE', 'PAUSED', 'OFFLINE']) {
       const b = document.createElement('button');
       b.type = 'button';
       b.dataset.key = key;
@@ -256,13 +262,17 @@
     $('count').textContent = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
     kinetic($('detailTitle'), item.title);
     $('detailMeta').textContent = `${item.category} · ${item.stack} · ${item.access}`;
-    body.classList.toggle('muted-detail', item.status !== 'live');
+    body.classList.toggle('muted-detail', item.status === 'offline');
+    body.classList.toggle('paused-detail', item.status === 'paused');
 
-    const live = item.status === 'live';
-    $('statusText').textContent = live ? 'LIVE' : 'OFFLINE';
-    $('statusPill').classList.toggle('off', !live);
+    $('statusText').textContent = item.status.toUpperCase();
+    $('statusPill').classList.toggle('off', item.status === 'offline');
+    $('statusPill').classList.toggle('paused', item.status === 'paused');
     $('actOpen').disabled = !item.url;
-    $('actOpen').textContent = item.url ? 'OPEN PROJECT' : (live ? 'NO LINK SET' : 'OFFLINE');
+    $('actOpen').textContent = item.url ? 'OPEN PROJECT'
+      : item.status === 'live' ? 'NO LINK SET'
+      : item.status === 'paused' ? 'PAUSED · NO LINK'
+      : 'OFFLINE';
 
     for (const card of $('gridCards').children) {
       card.classList.toggle('current', Number(card.dataset.origin) === item.origin);
@@ -323,7 +333,7 @@
       <div class="kicker">${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')} · ${esc(item.category)}</div>
       <h2>${esc(item.title)}</h2>
       <div class="rows">
-        <div class="row"><span>STATUS</span><span>${item.status === 'live' ? 'LIVE · РАБОЧИЙ' : 'OFFLINE · НЕ РАБОТАЕТ'}</span></div>
+        <div class="row"><span>STATUS</span><span>${STATUS_TEXT[item.status]}</span></div>
         <div class="row"><span>CATEGORY</span><span>${esc(item.category)}</span></div>
         <div class="row"><span>STACK</span><span>${esc(item.stack)}</span></div>
         <div class="row"><span>ACCESS</span><span>${esc(item.access)}</span></div>
@@ -386,7 +396,10 @@
       card.style.setProperty('--ch', [187, 318, 264, 208, 78, 342, 229, 171][p.origin % 8]);
       card.style.animationDelay = `${Math.min(i * 26, 520)}ms`;
       card.innerHTML = `
-        <div class="card-idx">${String(i + 1).padStart(2, '0')}</div>
+        <div class="card-head">
+          <span class="card-idx">${String(i + 1).padStart(2, '0')}</span>
+          ${p.status === 'live' ? '' : `<span class="state-chip">${p.status.toUpperCase()}</span>`}
+        </div>
         <h3>${esc(p.title)}</h3>
         <div class="card-meta"><i class="dot"></i><span>${esc(p.category)} · ${esc(p.stack)} · ${esc(p.access)}</span></div>`;
       card.addEventListener('click', () => {
@@ -459,8 +472,9 @@
       .map((p) => ({
         kind: 'GOTO',
         name: p.title,
-        key: p.status === 'live' ? '' : 'OFFLINE',
+        key: p.status === 'live' ? '' : p.status.toUpperCase(),
         off: p.status !== 'live',
+        flag: p.status === 'live' ? '' : p.status.toUpperCase(),
         run: () => {
           const inSet = window.ITD_SPIRAL.items.findIndex((x) => x.origin === p.origin);
           if (inSet >= 0) {
@@ -484,7 +498,7 @@
       const li = document.createElement('li');
       li.setAttribute('aria-selected', String(i === 0));
       li.innerHTML = `<span class="kind">${item.kind}</span><span class="name">${esc(item.name)}</span>` +
-        (item.off ? '<span class="off-flag">OFFLINE</span>' : '') +
+        (item.off ? `<span class="off-flag ${item.flag === 'PAUSED' ? 'paused' : ''}">${esc(item.flag)}</span>` : '') +
         (item.key && !item.off ? `<span class="key">${esc(item.key)}</span>` : '');
       li.addEventListener('click', () => { item.run(); closePalette(); });
       ul.appendChild(li);
@@ -565,6 +579,7 @@
   register({ id: 'app.about', name: 'КЛАВИШИ И О ПРИЛОЖЕНИИ', keys: 'F1', run: () => (state.panel === 'about' ? closePanel() : showAbout()) });
   register({ id: 'filter.all', name: 'ФИЛЬТР · ВСЕ', run: () => setFilter('ALL') });
   register({ id: 'filter.live', name: 'ФИЛЬТР · РАБОЧИЕ', run: () => setFilter('LIVE') });
+  register({ id: 'filter.paused', name: 'ФИЛЬТР · НА ПАУЗЕ', run: () => setFilter('PAUSED') });
   register({ id: 'filter.offline', name: 'ФИЛЬТР · НЕРАБОЧИЕ', run: () => setFilter('OFFLINE') });
 
   window.ITD_UI = {

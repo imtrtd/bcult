@@ -27,7 +27,7 @@
     items.forEach((p, i) => {
       const n = document.createElement('article');
       n.className = 'node';
-      n.dataset.status = p.status === 'live' ? 'live' : 'offline';
+      n.dataset.status = p.status;
       n.dataset.i = String(i);
       n.style.setProperty('--nh', hueOf(p));
 
@@ -40,6 +40,12 @@
       chip.className = 'chip';
       chip.textContent = p.category;
       head.append(idx, chip);
+      if (p.status !== 'live') {
+        const state = document.createElement('span');
+        state.className = 'chip state-chip';
+        state.textContent = p.status.toUpperCase();
+        head.appendChild(state);
+      }
 
       const title = document.createElement('div');
       title.className = 'title';
@@ -92,7 +98,7 @@
       const y = d * step;
       const z = -290 + depth * 545;
       const sc = .59 + depth * .43;
-      const offline = n.dataset.status === 'offline';
+      const drain = n.dataset.status === 'offline' ? .20 : n.dataset.status === 'paused' ? .52 : 1;
 
       // staggered entrance after a filter change
       const enter = easeOut(Math.min(1, Math.max(0, (now - mountedAt - i * 32) / 460)));
@@ -104,8 +110,8 @@
       n.style.setProperty('--connector', Math.max(24, Math.abs(x) - n.offsetWidth * .48) + 'px');
       n.style.transform = `translate(-50%,-50%) translate3d(${x}px,${y + (1 - enter) * 40}px,${z - (1 - enter) * 180}px) rotateY(${-Math.sin(th) * 25}deg) rotateZ(${Math.sin(th) * 3.1}deg) scale(${sc})`;
       n.style.opacity = op;
-      const sat = offline ? (.78 + depth * .52) * .2 : .78 + depth * .52;
-      const bri = offline ? (.8 + depth * .28) * .84 : .8 + depth * .28;
+      const sat = (.78 + depth * .52) * drain;
+      const bri = (.8 + depth * .28) * (drain < 1 ? .84 + (drain - .2) * .2 : 1);
       n.style.filter = `blur(${Math.max(0, (1 - depth) * 2)}px) saturate(${sat}) brightness(${bri})`;
       n.style.zIndex = Math.round(depth * 100);
     }
