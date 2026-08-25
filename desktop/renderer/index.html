@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>I/TD Neon Spiral</title>
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/ui.css">
+<link rel="stylesheet" href="css/chrome.css">
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<div class="shell" id="shell">
+  <div class="parallax">
+    <div class="wordmark">IM TRYING<br>TO DESIGN</div>
+    <div class="tag">DIGITAL SYSTEMS / CREATIVE TECHNOLOGY / AI</div>
+  </div>
+  <div class="core">
+    <span class="ring"></span>
+    <div><small>I/TD SPINE</small><b id="coreCount">17</b><small id="coreLabel">CONNECTED SCREENS</small></div>
+  </div>
+  <div id="nodes"></div>
+</div>
+
+<aside class="dock" id="dock" aria-label="Фильтры">
+  <header class="dock-head">
+    <span class="dock-title">FILTERS</span>
+    <button class="dock-reset" id="dockReset" type="button">СБРОС</button>
+  </header>
+  <div class="dock-body" id="dockBody"></div>
+  <footer class="dock-foot"><span id="dockCount">17 / 17</span></footer>
+</aside>
+
+<div class="ui">
+  <header class="top">
+    <div class="brand">
+      <strong>I/TD WEB OS</strong>
+      <span class="sep"></span>
+      <span id="modeLabel">SPIRAL</span>
+      <label class="search" id="searchWrap">
+        <span>⌕</span>
+        <input id="searchInput" type="text" placeholder="ПОИСК ПРОЕКТА" autocomplete="off" spellcheck="false">
+        <span class="hitcount" id="hitcount"></span>
+      </label>
+    </div>
+    <div class="status-cluster">
+      <span>FPS <b id="fps">60</b></span>
+      <span id="clock">00:00:00</span>
+      <span class="pill" id="statusPill"><i></i><span id="statusText">LIVE</span></span>
+    </div>
+  </header>
+
+  <nav class="rail" id="rail" aria-label="Меню"></nav>
+
+  <footer class="detail" id="detail">
+    <span class="n" id="count">01 / 17</span>
+    <div class="detail-body">
+      <div class="detail-title" id="detailTitle">HOME / WEB OS</div>
+      <p class="detail-desc" id="detailDesc"></p>
+      <small id="detailMeta">SYSTEM · JAVASCRIPT · PRIVATE</small>
+    </div>
+    <div class="detail-actions">
+      <button class="act" id="actOpen" type="button">OPEN PROJECT</button>
+      <button class="act" id="actInfo" type="button">INFO</button>
+    </div>
+  </footer>
+
+  <div class="hint" id="hint">КОЛЕСО / ПЕРЕТАСКИВАНИЕ — ДВИГАТЬ ЛУЧ · CTRL+K — КОМАНДЫ · F1 — КЛАВИШИ</div>
+</div>
+
+<section class="gridview" id="gridView" aria-label="Сетка проектов">
+  <div class="gridview-head">
+    <h2>ALL SCREENS</h2>
+    <span id="gridCount">17 PROJECTS</span>
+    <span id="gridFilter">FILTER · ALL</span>
+  </div>
+  <div class="grid-cards" id="gridCards"></div>
+</section>
+
+<section class="launcherview" id="launcherView" aria-label="Приложения">
+  <div class="gridview-head">
+    <h2>APPS</h2>
+    <span id="launcherHint">ПЕРЕТАЩИТЕ КАРТОЧКУ НА ДРУГУЮ, ЧТОБЫ СГРУППИРОВАТЬ</span>
+  </div>
+  <div class="launcher-grid" id="launcherGrid"></div>
+</section>
+
+<div class="scrim" id="scrim"></div>
+<section class="panel" id="panel" role="dialog" aria-modal="true"></section>
+
+<div class="palette" id="palette" role="dialog" aria-modal="true">
+  <input id="paletteInput" type="text" placeholder="КОМАНДА ИЛИ ПРОЕКТ…" autocomplete="off" spellcheck="false">
+  <ul id="paletteList"></ul>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<div class="cursor-trail" id="cursorTrail"></div>
+<div class="cursor" id="cursor"></div>
+
+<div class="titlebar" id="titlebar">
+  <div class="titlebar-drag">
+    <span class="titlebar-mark"></span>
+    <span class="titlebar-name"><b>I/TD</b> NEON SPIRAL</span>
+  </div>
+  <div class="titlebar-controls">
+    <button class="wbtn" id="btnMin" type="button" title="Свернуть" aria-label="Свернуть">
+      <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 5h10"/></svg>
+    </button>
+    <button class="wbtn" id="btnMax" type="button" title="Развернуть" aria-label="Развернуть">
+      <svg class="ico-max" viewBox="0 0 10 10" aria-hidden="true"><rect x="0.5" y="0.5" width="9" height="9"/></svg>
+      <svg class="ico-restore" viewBox="0 0 10 10" aria-hidden="true"><rect x="0.5" y="2.5" width="7" height="7"/><path d="M2.5 2.5V0.5h7v7h-2"/></svg>
+    </button>
+    <button class="wbtn close" id="btnClose" type="button" title="Закрыть" aria-label="Закрыть">
+      <svg viewBox="0 0 10 10" aria-hidden="true"><path d="M0 0l10 10M10 0L0 10"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="boot" id="boot">
+  <div class="boot-inner">
+    <div class="boot-mark">I/TD</div>
+    <div class="boot-bar"><i id="bootBar"></i></div>
+    <div class="boot-line" id="bootLine">BOOTING SPINE…</div>
+  </div>
+</div>
+
+<script src="js/projects.js"></script>
+<script src="js/bg.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/spiral.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/launcher.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

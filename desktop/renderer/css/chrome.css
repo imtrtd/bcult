@@ -1,0 +1,107 @@
+/* ============================================================ titlebar */
+.titlebar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--tb);
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  background: linear-gradient(180deg, rgba(4, 5, 14, .9), rgba(4, 5, 14, 0));
+  backdrop-filter: blur(8px);
+  user-select: none;
+}
+.titlebar-drag { flex: 1; display: flex; align-items: center; gap: 10px; padding-left: 14px; -webkit-app-region: drag; }
+.titlebar-mark { width: 9px; height: 9px; border: 1px solid hsl(var(--h) var(--sat) 74%/.9); box-shadow: 0 0 10px hsl(var(--h) var(--sat) 62%/.7); transform: rotate(45deg); }
+.titlebar-name { font-family: var(--mono); font-size: 7.5px; letter-spacing: .34em; color: rgba(226, 236, 255, .5); }
+.titlebar-name b { color: rgba(255, 255, 255, .8); font-weight: 400; }
+.titlebar-controls { display: flex; -webkit-app-region: no-drag; }
+
+.wbtn {
+  width: 44px;
+  height: var(--tb);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(226, 236, 255, .6);
+  cursor: none;
+  transition: background .16s, color .16s, box-shadow .16s;
+}
+.wbtn svg { width: 10px; height: 10px; fill: none; stroke: currentColor; stroke-width: 1; }
+.wbtn:hover { color: #fff; background: hsl(var(--h) var(--sat) 60%/.18); box-shadow: inset 0 -1px 0 hsl(var(--h) var(--sat) 72%/.85), 0 0 22px hsl(var(--h) var(--sat) 62%/.26); }
+.wbtn:focus-visible { outline: 1px solid var(--cy); outline-offset: -3px; }
+.wbtn.close:hover { color: #fff; background: rgba(255, 45, 210, .34); box-shadow: inset 0 -1px 0 var(--mg), 0 0 26px rgba(255, 45, 210, .45); }
+.wbtn .ico-restore { display: none; }
+body.maximized .wbtn .ico-max { display: none; }
+body.maximized .wbtn .ico-restore { display: block; }
+
+body.fullscreen .titlebar { display: none; }
+body.fullscreen { --tb: 0px; }
+body.fullscreen .wordmark { top: 6vh; }
+
+/* ============================================================ custom cursor */
+.cursor {
+  position: fixed;
+  z-index: 60;
+  left: 0; top: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  border: 1px solid hsl(var(--h) var(--sat) 78%/.85);
+  border-radius: 50%;
+  box-shadow: 0 0 14px hsl(var(--h) var(--sat) 62%/.5);
+  pointer-events: none;
+  transition: width .25s var(--ease), height .25s var(--ease), margin .25s var(--ease), opacity .25s, background .25s, border-color .25s;
+  will-change: transform;
+}
+.cursor::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 3px; height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 8px var(--cy), 0 0 14px var(--mg);
+}
+body.cursor-hot .cursor { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: hsl(var(--h) var(--sat) 60%/.10); }
+body.cursor-drag .cursor { width: 16px; height: 16px; margin: -8px 0 0 -8px; background: hsl(var(--h) var(--sat) 70%/.28); }
+body.no-custom-cursor .cursor { display: none; }
+.cursor-trail {
+  position: fixed;
+  z-index: 59;
+  left: 0; top: 0;
+  width: 46px; height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+  background: radial-gradient(circle, hsl(var(--h) var(--sat) 62%/.20), transparent 70%);
+  pointer-events: none;
+  will-change: transform;
+}
+body.no-custom-cursor .cursor-trail { display: none; }
+
+/* ============================================================ boot intro */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  background: #04040a;
+  transition: opacity .8s var(--ease), visibility .8s;
+}
+body.booted .boot { opacity: 0; visibility: hidden; }
+.boot-inner { text-align: center; }
+.boot-mark {
+  font-size: 40px;
+  font-weight: 200;
+  letter-spacing: .5em;
+  padding-left: .5em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .6);
+  text-shadow: 0 0 30px hsl(var(--h) var(--sat) 62%/.6);
+}
+.boot-bar { width: 190px; height: 1px; margin: 22px auto 12px; background: rgba(255, 255, 255, .12); overflow: hidden; }
+.boot-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--cy), hsl(var(--h) var(--sat) 68%), var(--mg)); box-shadow: 0 0 12px hsl(var(--h) var(--sat) 62%); transition: width .5s linear; }
+.boot-line { font-family: var(--mono); font-size: 7px; letter-spacing: .3em; color: var(--muted); }
