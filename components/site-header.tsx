@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import { useLocale, type Locale } from './locale-provider'
 
-const HREFS = ['#signal', '#projects', '#sound-skin', '#analyse', '#shape', '#dna', '#kontakt']
+const HREFS = ['#signal', '#projects', '#sound-skin', '#analyse', '#pakete', '#dna', '#kontakt']
 
 export function SiteHeader() {
   const { copy, locale, setLocale } = useLocale()

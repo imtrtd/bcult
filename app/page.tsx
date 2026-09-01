@@ -5,6 +5,7 @@ import { CreativeProjects } from '@/components/creative-projects'
 import { SoundSkin } from '@/components/sound-skin'
 import { Analyse } from '@/components/analyse'
 import { ShapeYourSound } from '@/components/shape-your-sound'
+import { Packages } from '@/components/packages'
 import { SystemDna } from '@/components/system-dna'
 import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
@@ -21,6 +22,7 @@ export default function Page() {
         <SoundSkin />
         <Analyse />
         <ShapeYourSound />
+        <Packages />
         <SystemDna />
         <Contact />
         <SiteFooter />
