@@ -4,9 +4,9 @@ import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
 
 const PACKAGE_OPTIONS = {
-  de: ['Noch offen', 'MARK', 'RELEASE', 'SYSTEM', 'Focus-Kohorte'],
-  en: ['Not sure yet', 'MARK', 'RELEASE', 'SYSTEM', 'Focus cohort'],
-  ru: ['Пока не выбрал', 'MARK', 'RELEASE', 'SYSTEM', 'Фокус-когорта'],
+  de: ['Noch offen', 'MARK', 'RELEASE', 'SYSTEM', 'MIX · Sammelplatte', 'Focus-Kohorte'],
+  en: ['Not sure yet', 'MARK', 'RELEASE', 'SYSTEM', 'MIX · Pick & mix', 'Focus cohort'],
+  ru: ['Пока не выбрал', 'MARK', 'RELEASE', 'SYSTEM', 'MIX · Сборная солянка', 'Фокус-когорта'],
 } as const
 
 const PACKAGE_LABEL = {
