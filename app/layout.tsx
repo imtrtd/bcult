@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { IBM_Plex_Mono, Onest } from 'next/font/google'
+import { LocaleProvider } from '@/components/locale-provider'
 import './globals.css'
 
 const onest = Onest({
@@ -17,15 +18,25 @@ const plexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'brandcultura — SHAPE YOUR SOUND · SIGNAL',
+  metadataBase: new URL('https://brandcultura.art'),
+  title: 'brandcultura — Klangidentität für Artists und Labels',
   description:
-    'Creative agency for artists, labels and emerging projects. We uncover uniqueness and build identities, systems and communities that grow.',
-  generator: 'v0.app',
+    'Wir machen Klang sichtbar. Identitäten, Cover und Systeme für Musiker:innen und Labels — vom ersten Zeichen bis zur arbeitenden Hülle.',
+  openGraph: {
+    title: 'brandcultura — Klangidentität für Artists und Labels',
+    description:
+      'Wir machen Klang sichtbar. Identitäten, Cover und Systeme für Musiker:innen und Labels — vom ersten Zeichen bis zur arbeitenden Hülle.',
+    url: 'https://brandcultura.art',
+    siteName: 'brandcultura',
+    locale: 'de_DE',
+    type: 'website',
+    images: [{ url: '/images/shape-your-sound.png', alt: 'Spektrogramm-Formen als visuelle Identität' }],
+  },
 }
 
 export const viewport: Viewport = {
   colorScheme: 'dark',
-  themeColor: '#0d0b0e',
+  themeColor: '#010101',
 }
 
 export default function RootLayout({
@@ -40,7 +51,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="antialiased">
-        {children}
+        <LocaleProvider>{children}</LocaleProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
