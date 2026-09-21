@@ -1,32 +1,23 @@
 import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
 import { ProcessSteps } from '@/components/process-steps'
-import { CreativeProjects } from '@/components/creative-projects'
 import { SoundSkin } from '@/components/sound-skin'
 import { Analyse } from '@/components/analyse'
-import { ShapeYourSound } from '@/components/shape-your-sound'
 import { Packages } from '@/components/packages'
-import { SystemDna } from '@/components/system-dna'
 import { Contact } from '@/components/contact'
 import { SiteFooter } from '@/components/site-footer'
-import { LocaleProvider } from '@/components/locale-provider'
 
 export default function Page() {
   return (
-    <LocaleProvider>
-      <main className="site-shell relative isolate min-h-screen overflow-hidden bg-background">
-        <SiteHeader />
-        <Hero />
-        <ProcessSteps />
-        <CreativeProjects />
-        <SoundSkin />
-        <Analyse />
-        <ShapeYourSound />
-        <Packages />
-        <SystemDna />
-        <Contact />
-        <SiteFooter />
-      </main>
-    </LocaleProvider>
+    <main className="site-shell relative isolate min-h-screen overflow-hidden bg-background">
+      <SiteHeader />
+      <Hero />
+      <ProcessSteps />
+      <Analyse />
+      <Packages />
+      <SoundSkin />
+      <Contact />
+      <SiteFooter />
+    </main>
   )
 }
