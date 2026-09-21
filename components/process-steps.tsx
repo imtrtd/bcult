@@ -9,6 +9,7 @@ export function ProcessSteps() {
 
   return (
     <section
+      id="arbeit"
       aria-labelledby="arbeitsweise-heading"
       className="mx-auto mt-6 max-w-6xl px-4 py-12 sm:mt-10 sm:px-5 sm:py-16 md:px-8"
     >
@@ -25,7 +26,6 @@ export function ProcessSteps() {
         </div>
       </Reveal>
 
-      {/* animated timeline connector (desktop) */}
       <Reveal delay={80}>
         <div className="mt-10 hidden items-center gap-3 md:flex" aria-hidden>
           {t.steps.map((step, i) => (
@@ -61,30 +61,6 @@ export function ProcessSteps() {
           </Reveal>
         ))}
       </div>
-
-      <Reveal delay={260}>
-        <div className="relative mt-3 flex min-h-40 items-center justify-between overflow-hidden border border-purple/30 bg-purple/55 p-6 shadow-[0_24px_80px_oklch(0.52_0.085_315/14%)] sm:min-h-44 sm:p-8">
-          <span className="display whitespace-pre-line text-3xl font-extrabold leading-none text-foreground sm:text-5xl">
-            {t.accent}
-          </span>
-          <div className="flex h-full flex-col items-end justify-between gap-6 self-stretch">
-            <span className="label-mono text-pink">DE 26</span>
-            <div className="flex items-end gap-[3px]" aria-hidden>
-              {Array.from({ length: 10 }).map((_, i) => (
-                <span
-                  key={i}
-                  className="eq-bar block w-1 rounded-sm bg-lime/90"
-                  style={{
-                    height: `${16 + Math.abs(Math.sin(i * 1.7)) * 26}px`,
-                    animationDelay: `${(i % 6) * 110}ms`,
-                    animationDuration: `${820 + (i % 4) * 160}ms`,
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </Reveal>
     </section>
   )
 }
