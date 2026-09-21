@@ -1,7 +1,8 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
+import { MIX_STORAGE_KEY, countMix, selectedMixLabels } from '@/lib/mix-modules'
 
 const PACKAGE_OPTIONS = {
   de: ['Noch offen', 'MARK', 'RELEASE', 'SYSTEM', 'MIX · Sammelplatte', 'Focus-Kohorte'],
@@ -17,8 +18,29 @@ const PACKAGE_LABEL = {
 
 export function Contact() {
   const [sent, setSent] = useState(false)
+  const [pkg, setPkg] = useState('')
+  const [message, setMessage] = useState('')
   const { copy, locale } = useLocale()
   const t = copy.contact
+  const mixOption = PACKAGE_OPTIONS[locale][4]
+
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem(MIX_STORAGE_KEY)
+      if (!raw) return
+      const mixOn = JSON.parse(raw) as Record<string, boolean>
+      const n = countMix(mixOn)
+      if (n <= 0) return
+      setPkg(mixOption)
+      const labels = selectedMixLabels(mixOn, locale)
+      setMessage((prev) => {
+        if (prev.trim()) return prev
+        return `${n} / 50 · ${labels.join(', ')}`
+      })
+    } catch {
+      /* ignore */
+    }
+  }, [locale, mixOption])
   return (
     <section id="kontakt" aria-labelledby="kontakt-heading" className="carbon-surface border-t border-border">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-9 px-4 py-14 sm:gap-12 sm:px-5 sm:py-16 md:grid-cols-2 md:px-8 md:py-24">
@@ -42,14 +64,24 @@ export function Contact() {
                 <input type="email" required placeholder="you@sound.de" className="min-h-12 border border-border bg-background/80 px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-pink" />
               </Field>
               <Field label={PACKAGE_LABEL[locale]}>
-                <select className="min-h-12 border border-border bg-background/80 px-4 py-3 text-base text-foreground outline-none focus:border-pink" defaultValue={PACKAGE_OPTIONS[locale][0]}>
+                <select
+                  className="min-h-12 border border-border bg-background/80 px-4 py-3 text-base text-foreground outline-none focus:border-pink"
+                  value={pkg || PACKAGE_OPTIONS[locale][0]}
+                  onChange={(e) => setPkg(e.target.value)}
+                >
                   {PACKAGE_OPTIONS[locale].map((option) => (
                     <option key={option} value={option}>{option}</option>
                   ))}
                 </select>
               </Field>
               <Field label={t.message}>
-                <textarea rows={4} placeholder={t.messagePlaceholder} className="resize-none border border-border bg-background/80 px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-pink" />
+                <textarea
+                  rows={4}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder={t.messagePlaceholder}
+                  className="resize-none border border-border bg-background/80 px-4 py-3 text-base text-foreground outline-none placeholder:text-muted-foreground/60 focus:border-pink"
+                />
               </Field>
               <button type="submit" className="mt-2 min-h-12 bg-lime px-6 py-3 text-sm font-semibold text-lime-foreground transition-colors hover:bg-foreground">{t.send}</button>
             </form>
