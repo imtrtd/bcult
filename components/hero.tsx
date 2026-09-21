@@ -13,20 +13,18 @@ export function Hero() {
 
   return (
     <section id="top" className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-5 sm:pb-14 sm:pt-12 md:px-8 md:pb-20 md:pt-16">
-      {/* meta bar */}
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-border pb-4">
         <span className="label-mono text-pink">{t.eyebrow}</span>
         <span className="label-mono text-muted-foreground">{t.arts}</span>
         <span className="label-mono ml-auto hidden text-muted-foreground sm:inline">{t.audience}</span>
       </div>
 
-      {/* headline + equalizer */}
       <div className="grid gap-8 pt-10 md:grid-cols-[1.15fr_0.85fr] md:items-end md:gap-10 md:pt-16">
         <Reveal>
           <p className="label-mono mb-6 text-purple">01 / sound identity</p>
           <h1 className="display text-balance text-[clamp(3.4rem,11vw,9rem)] font-extrabold leading-[0.82] tracking-[-0.07em] text-foreground">
             {t.title}{' '}
-            <span className="text-muted-foreground">{t.titleEnd}</span>
+            <span className="text-foreground">{t.titleEnd}</span>
             <span className="text-pink">.</span>
           </h1>
         </Reveal>
@@ -51,7 +49,6 @@ export function Hero() {
               </div>
               <span className="agency-glitch mt-3" data-text="AGENCY">AGENCY</span>
             </div>
-            {/* signature live equalizer */}
             <div className="flex h-16 items-end gap-1 sm:h-20" aria-hidden="true">
               {EQ_BARS.map((_, i) => (
                 <span
@@ -68,14 +65,10 @@ export function Hero() {
         </Reveal>
       </div>
 
-      {/* SIGNAL — live drum machine + looper */}
-      <DrumMachine />
-
-      {/* bottom action + metrics */}
       <Reveal delay={220} className="mt-10 border-t border-border pt-8 sm:mt-14">
         <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
           <dl className="grid grid-cols-3 gap-4 sm:gap-8">
-            {[['20 Hz - 20 kHz', t.frequency], ['∞', t.titleEnd], ['2026', t.eyebrow]].map(([value, label]) => (
+            {[['20 Hz - 20 kHz', t.frequency], ['\u221e', t.titleEnd], ['2026', t.eyebrow]].map(([value, label]) => (
               <div key={value} className="border-l border-pink/50 pl-3 sm:pl-4">
                 <dt className="display text-2xl font-extrabold leading-none tracking-tight text-foreground sm:text-4xl">{value}</dt>
                 <dd className="label-mono mt-2 text-muted-foreground">{label}</dd>
@@ -83,11 +76,19 @@ export function Hero() {
             ))}
           </dl>
           <div className="flex flex-col gap-3 sm:flex-row">
-            <a href="#kontakt" className="flex min-h-12 items-center justify-center bg-lime px-6 py-3 text-sm font-semibold text-lime-foreground transition-transform hover:-translate-y-0.5 hover:bg-foreground">{t.discuss}</a>
-            <a href="#analyse" className="flex min-h-12 items-center justify-center border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-purple hover:text-purple">{t.spectrum}</a>
+            <a href="/#kontakt" className="flex min-h-12 items-center justify-center bg-lime px-6 py-3 text-sm font-semibold text-lime-foreground transition-transform hover:-translate-y-0.5 hover:bg-foreground">{t.discuss}</a>
+            <a href="/#analyse" className="flex min-h-12 items-center justify-center border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-purple hover:text-purple">{t.spectrum}</a>
           </div>
         </div>
       </Reveal>
+
+      <details id="signal" className="group mt-8 border border-border sm:mt-10">
+        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
+          <span className="label-mono text-lime">{t.playSignal}</span>
+          <span className="label-mono text-muted-foreground group-open:hidden">{t.playHint}</span>
+        </summary>
+        <DrumMachine embedded />
+      </details>
     </section>
   )
 }
