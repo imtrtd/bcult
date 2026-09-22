@@ -18,15 +18,15 @@ const plexMono = IBM_Plex_Mono({
 })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://brandcultura.art'),
-  title: 'brandcultura — Klangidentität für Artists und Labels',
+  metadataBase: new URL('https://brandcultura.agency'),
+  title: 'brandcultura — visuelle Identität für Musik',
   description:
-    'Wir machen Klang sichtbar. Identitäten, Cover und Systeme für Musiker:innen und Labels — vom ersten Zeichen bis zur arbeitenden Hülle.',
+    'Visuelle Identität, Cover und Websites für Musiker:innen, Bands und Labels.',
   openGraph: {
-    title: 'brandcultura — Klangidentität für Artists und Labels',
+    title: 'brandcultura — visuelle Identität für Musik',
     description:
-      'Wir machen Klang sichtbar. Identitäten, Cover und Systeme für Musiker:innen und Labels — vom ersten Zeichen bis zur arbeitenden Hülle.',
-    url: 'https://brandcultura.art',
+      'Visuelle Identität, Cover und Websites für Musiker:innen, Bands und Labels.',
+    url: 'https://brandcultura.agency',
     siteName: 'brandcultura',
     locale: 'de_DE',
     type: 'website',

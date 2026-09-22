@@ -215,26 +215,14 @@ export function AngebotView() {
         <h2 className="text-xl font-bold text-foreground">{t.tiersTitle}</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">{t.rule}</p>
       </div>
-      <div className="mt-3 hidden overflow-hidden border border-border md:block">
-        <table className="w-full border-collapse text-left text-sm">
-          <thead><tr><th className="p-3" />{t.tiers.map((tier) => <th key={tier.code} className="p-3 text-left font-display text-2xl font-bold text-foreground">{tier.code}</th>)}</tr></thead>
-          <tbody>
-            <tr className="border-t border-border"><th className="label-mono p-3 text-left font-normal text-muted-foreground">{t.cols.who}</th>{t.tiers.map((tier) => <td key={tier.code} className="p-3">{tier.who}</td>)}</tr>
-            <tr className="border-t border-border"><th className="label-mono p-3 text-left font-normal text-muted-foreground">{t.cols.price}</th>{t.tiers.map((tier) => <td key={tier.code} className="p-3 font-display text-3xl font-bold text-lime">{tier.price}</td>)}</tr>
-            <tr className="border-t border-border"><th className="label-mono p-3 text-left font-normal text-muted-foreground">{t.cols.focus}</th>{t.tiers.map((tier) => <td key={tier.code} className="p-3">{tier.focus}</td>)}</tr>
-            <tr className="border-t border-border"><th className="label-mono p-3 text-left font-normal text-muted-foreground">{t.cols.deposit}</th>{t.tiers.map((tier) => <td key={tier.code} className="p-3">{tier.deposit}</td>)}</tr>
-            <tr className="border-t border-border"><th className="label-mono p-3 text-left font-normal text-muted-foreground">{t.cols.time}</th>{t.tiers.map((tier) => <td key={tier.code} className="p-3">{tier.time}</td>)}</tr>
-          </tbody>
-        </table>
-      </div>
       <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3">
         {t.tiers.map((tier) => (
           <section key={tier.code} className="carbon-panel p-4">
-            <div className="flex items-baseline justify-between gap-3 md:hidden"><h3 className="font-display text-2xl font-bold">{tier.code}</h3><p className="font-display text-3xl font-bold text-lime">{tier.price}</p></div>
-            <p className="mt-2 text-sm leading-snug text-foreground md:mt-0">{tier.point}</p>
+            <div className="flex items-baseline justify-between gap-3"><h3 className="font-display text-2xl font-bold">{tier.code}</h3><p className="font-display text-3xl font-bold text-lime">{tier.price}</p></div>
+            <p className="mt-2 text-sm leading-snug text-foreground">{tier.point}</p>
             <p className="label-mono mt-3 text-muted-foreground">{t.cols.in}</p>
             <ul className="mt-2 flex flex-col gap-1">{tier.items.map((item) => <li key={item} className="text-sm leading-snug"><span className="mr-2 inline-block size-1.5 bg-lime" aria-hidden="true" />{item}</li>)}</ul>
-            <p className="mt-3 text-sm text-muted-foreground md:hidden">{t.cols.focus} {tier.focus} · {t.cols.deposit} {tier.deposit} · {tier.time}</p>
+            <p className="mt-3 text-sm text-muted-foreground">{t.cols.focus} {tier.focus} · {t.cols.deposit} {tier.deposit} · {tier.time}</p>
           </section>
         ))}
       </div>

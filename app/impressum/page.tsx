@@ -25,7 +25,7 @@ export default function ImpressumPage() {
               {CONTACT_EMAIL}
             </a>
             <br />
-            Website: brandcultura.art
+            Website: brandcultura.agency
           </p>
           <p>
             Eine ladungsfähige Postanschrift wird auf Anfrage an diese Adresse mitgeteilt. Hier steht keine erfundene Straße.
