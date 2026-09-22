@@ -63,32 +63,26 @@ export const MIX_MODULES: MixMod[] = [
   { id: 'pay-plan', group: 'SPECIAL', de: 'Zahlungsplan', en: 'Payment plan', ru: 'План оплаты' },
 ]
 
-export const MIX_COLS: MixGroup[][] = [
-  ['MARK', 'RELEASE'],
-  ['SITE', 'INST'],
-  ['STRATEGY', 'MERCH', 'SPECIAL'],
-]
-
 export const MIX_COPY: Record<
   MixLocale,
   { heading: string; ticked: string; all: string; none: string; hint: string }
 > = {
   de: {
-    heading: '50 Module · abhaken',
+    heading: 'Module wählen',
     ticked: 'Module',
     all: 'Alle',
     none: 'Keine',
     hint: 'Hake an, was der Brief braucht. MIX wird nach Scope kalkuliert.',
   },
   en: {
-    heading: '50 modules · tick',
+    heading: 'Pick modules',
     ticked: 'Modules',
     all: 'All',
     none: 'None',
     hint: 'Tick what the brief needs. MIX is quoted by scope.',
   },
   ru: {
-    heading: '50 модулей · галочки',
+    heading: 'Выбор модулей',
     ticked: 'Модули',
     all: 'Все',
     none: 'Сброс',

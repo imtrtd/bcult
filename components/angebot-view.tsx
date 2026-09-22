@@ -1,6 +1,7 @@
 'use client'
 
 import { CONTACT_EMAIL } from '@/lib/site'
+import { MixChecklist } from './mix-checklist'
 import { useLocale, type Locale } from './locale-provider'
 
 type Person = { name: string; line: string; brings: string; leaves: string }
@@ -237,14 +238,17 @@ export function AngebotView() {
           </section>
         ))}
       </div>
-      <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-[1.3fr_0.7fr]">
-        <section className="carbon-panel p-4">
-          <h2 className="text-lg font-bold">{t.mixTitle}</h2>
-          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.mix}</p>
-          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">{t.groups.map(([name, body]) => <p key={name} className="text-sm leading-relaxed"><span className="label-mono text-pink">{name}</span><span className="mt-1 block">{body}</span></p>)}</div>
-        </section>
-        <section className="border border-lime/40 p-4"><h2 className="text-lg font-bold">{t.focusTitle}</h2><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.focusBody}</p></section>
-      </div>
+      <section className="mt-3 carbon-panel p-4 sm:p-5">
+        <h2 className="text-lg font-bold">{t.mixTitle}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.mix}</p>
+        <div className="mt-4">
+          <MixChecklist />
+        </div>
+      </section>
+      <section className="mt-3 border border-lime/40 p-4">
+        <h2 className="text-lg font-bold">{t.focusTitle}</h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{t.focusBody}</p>
+      </section>
       <div className="mt-3 grid grid-cols-1 gap-3 lg:grid-cols-[1.15fr_0.85fr]">
         <section>
           <h2 className="text-lg font-bold">{t.startTitle}</h2>

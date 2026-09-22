@@ -21,6 +21,7 @@ export function SiteFooter() {
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label={t.aria}>
             <a href="/angebot" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{offer}</a>
             <a href="/#pakete" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.packages}</a>
+            <a href="/#mix" className="label-mono text-muted-foreground transition-colors hover:text-foreground">MIX</a>
             <a href="/#kontakt" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.contact}</a>
             <a href="/impressum" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.impressum}</a>
             <a href="/datenschutz" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.privacy}</a>
@@ -28,10 +29,6 @@ export function SiteFooter() {
         </div>
         <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
           <a href="https://imtryingtodesign.com" className="text-foreground underline decoration-pink underline-offset-4">{t.credit}</a>
-          {' · '}
-          <a href="/#sound-skin" className="text-foreground underline decoration-pink underline-offset-4">{t.namenlos}</a>
-          {' — '}
-          {t.namenlosLine}
         </p>
       </div>
     </footer>

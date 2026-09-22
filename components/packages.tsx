@@ -290,6 +290,11 @@ export function Packages() {
           </Reveal>
         ) : null}
         <Reveal delay={320}>
+          <article id="mix" className="mt-3 carbon-panel border-lime/35 p-5 sm:p-6">
+            <MixChecklist />
+          </article>
+        </Reveal>
+        <Reveal delay={360}>
           <p className="mt-8 max-w-3xl text-sm leading-relaxed text-muted-foreground">{t.note}</p>
         </Reveal>
       </div>
@@ -318,8 +323,7 @@ function PackageCard({
   const priceLabel = item.custom ? labels.customPriceLabel : labels.listLabel
   return (
     <article
-      id={item.custom ? 'mix' : undefined}
-      className={`carbon-panel flex min-h-full flex-col gap-5 border-pink/30 p-5 transition-colors hover:border-pink sm:p-6 ${wide && !item.custom ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-10' : ''} ${item.custom ? 'border-lime/35 hover:border-lime' : ''}`}
+      className={`carbon-panel flex min-h-full flex-col gap-5 border-pink/30 p-5 transition-colors hover:border-pink sm:p-6 ${wide ? 'lg:grid lg:grid-cols-[1.1fr_0.9fr] lg:items-start lg:gap-10' : ''} ${item.custom ? 'border-lime/35 hover:border-lime' : ''}`}
     >
       <div className="flex flex-col gap-5">
         <div className="flex items-center justify-between gap-3">
@@ -340,21 +344,17 @@ function PackageCard({
         </div>
       </div>
       <div className="flex min-h-full flex-col gap-5">
-        {item.custom ? (
-          <MixChecklist />
-        ) : (
-          <div>
-            <span className="label-mono text-muted-foreground">{labels.includesLabel}</span>
-            <ul className="mt-3 flex flex-col gap-2">
-              {item.includes.map((line) => (
-                <li key={line} className="text-sm leading-relaxed text-foreground">
-                  <span className="mr-2 text-lime">→</span>
-                  {line}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div>
+          <span className="label-mono text-muted-foreground">{labels.includesLabel}</span>
+          <ul className="mt-3 flex flex-col gap-2">
+            {item.includes.map((line) => (
+              <li key={line} className="text-sm leading-relaxed text-foreground">
+                <span className="mr-2 text-lime">→</span>
+                {line}
+              </li>
+            ))}
+          </ul>
+        </div>
         <a
           href="/#kontakt"
           onClick={() => rememberPackage(item.custom ? 'MIX' : (item.name as PackageCode))}

@@ -1,7 +1,6 @@
 import { SiteHeader } from '@/components/site-header'
 import { Hero } from '@/components/hero'
 import { ProcessSteps } from '@/components/process-steps'
-import { SoundSkin } from '@/components/sound-skin'
 import { Analyse } from '@/components/analyse'
 import { Packages } from '@/components/packages'
 import { Contact } from '@/components/contact'
@@ -15,7 +14,6 @@ export default function Page() {
       <ProcessSteps />
       <Analyse />
       <Packages />
-      <SoundSkin />
       <Contact />
       <SiteFooter />
     </main>

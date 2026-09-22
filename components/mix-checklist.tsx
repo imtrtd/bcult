@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { useLocale } from './locale-provider'
 import {
-  MIX_COLS,
   MIX_COPY,
+  MIX_GROUPS,
   MIX_MODULES,
   MIX_STORAGE_KEY,
   countMix,
@@ -40,6 +40,11 @@ export function MixChecklist() {
     }
   }, [])
 
+  function apply(next: Record<string, boolean>) {
+    persist(next)
+    setMixOn(next)
+  }
+
   function toggle(id: string) {
     setMixOn((prev) => {
       const next = { ...prev, [id]: !prev[id] }
@@ -48,10 +53,19 @@ export function MixChecklist() {
     })
   }
 
+  function toggleGroup(group: MixGroup) {
+    const items = MIX_MODULES.filter((m) => m.group === group)
+    setMixOn((prev) => {
+      const allOn = items.every((m) => prev[m.id])
+      const next = { ...prev }
+      for (const m of items) next[m.id] = !allOn
+      persist(next)
+      return next
+    })
+  }
+
   function setAll(on: boolean) {
-    const next = defaultMixOn(on)
-    persist(next)
-    setMixOn(next)
+    apply(defaultMixOn(on))
   }
 
   const n = countMix(mixOn)
@@ -59,14 +73,14 @@ export function MixChecklist() {
 
   return (
     <div>
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <span className="label-mono text-muted-foreground">{t.heading}</span>
-          <p className="mt-1 text-sm text-muted-foreground">{t.hint}</p>
+      <div className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="min-w-0">
+          <span className="label-mono text-pink">{t.heading}</span>
+          <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">{t.hint}</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="font-display text-xl font-bold text-lime">
-            {n} / {total}
+          <span className="font-mono text-sm tabular-nums text-lime">
+            {n}/{total}
           </span>
           <button
             type="button"
@@ -85,19 +99,16 @@ export function MixChecklist() {
         </div>
       </div>
 
-      <div className="mt-5 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {MIX_COLS.map((groups) => (
-          <div key={groups.join('-')} className="flex flex-col gap-5">
-            {groups.map((group) => (
-              <MixGroupBlock
-                key={group}
-                group={group}
-                mixOn={mixOn}
-                onToggle={toggle}
-                locale={locale}
-              />
-            ))}
-          </div>
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {MIX_GROUPS.map((group) => (
+          <MixGroupBlock
+            key={group}
+            group={group}
+            mixOn={mixOn}
+            onToggle={toggle}
+            onToggleGroup={toggleGroup}
+            locale={locale}
+          />
         ))}
       </div>
     </div>
@@ -108,21 +119,35 @@ function MixGroupBlock({
   group,
   mixOn,
   onToggle,
+  onToggleGroup,
   locale,
 }: {
   group: MixGroup
   mixOn: Record<string, boolean>
   onToggle: (id: string) => void
+  onToggleGroup: (group: MixGroup) => void
   locale: 'de' | 'en' | 'ru'
 }) {
   const items = MIX_MODULES.filter((m) => m.group === group)
+  const onCount = items.reduce((n, m) => n + (mixOn[m.id] ? 1 : 0), 0)
+
   return (
-    <div>
-      <div className="mb-2 flex items-center gap-2">
-        <span className="inline-block size-1.5 bg-lime" />
-        <span className="label-mono text-pink">{group}</span>
-      </div>
-      <ul className="flex flex-col gap-1">
+    <div className="flex flex-col border border-border bg-background/40 p-3">
+      <button
+        type="button"
+        onClick={() => onToggleGroup(group)}
+        className="mb-1.5 flex min-h-8 items-center justify-between gap-2 px-0.5 text-left"
+        aria-pressed={onCount === items.length}
+      >
+        <span className="flex items-center gap-2">
+          <span className="inline-block size-1.5 bg-lime" aria-hidden />
+          <span className="label-mono text-pink">{group}</span>
+        </span>
+        <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+          {onCount}/{items.length}
+        </span>
+      </button>
+      <ul className="flex flex-col">
         {items.map((m) => {
           const on = !!mixOn[m.id]
           return (
@@ -130,29 +155,26 @@ function MixGroupBlock({
               <button
                 type="button"
                 onClick={() => onToggle(m.id)}
-                className="flex w-full min-h-9 items-center gap-2.5 px-1 py-1 text-left"
+                className="flex w-full min-h-8 items-center gap-2 px-0.5 text-left"
                 aria-pressed={on}
               >
                 <span
-                  className="flex size-4 shrink-0 items-center justify-center border"
-                  style={{
-                    borderColor: on ? '#c6ef00' : '#ff2b8a',
-                    background: on ? '#c6ef00' : 'transparent',
-                  }}
+                  className={`flex size-3.5 shrink-0 items-center justify-center border ${on ? 'border-lime bg-lime' : 'border-pink/60 bg-transparent'}`}
                 >
                   {on ? (
-                    <svg viewBox="0 0 12 12" className="size-3" aria-hidden>
+                    <svg viewBox="0 0 12 12" className="size-2.5" aria-hidden>
                       <path
                         d="M2 6.4 4.8 9.2 10 3"
                         fill="none"
-                        stroke="#0d0b0e"
+                        stroke="currentColor"
+                        className="text-lime-foreground"
                         strokeWidth="2.2"
                         strokeLinecap="square"
                       />
                     </svg>
                   ) : null}
                 </span>
-                <span className={`text-sm leading-snug ${on ? 'text-foreground' : 'text-muted-foreground'}`}>
+                <span className={`text-[13px] leading-snug ${on ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {mixLabel(m, locale)}
                 </span>
               </button>
