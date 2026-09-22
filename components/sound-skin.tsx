@@ -13,7 +13,7 @@ export function SoundSkin() {
   const audioContextRef = useRef<AudioContext | null>(null)
 
   function playSignal() {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext
+    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
     const context = audioContextRef.current ?? new AudioContextClass()
     audioContextRef.current = context
     const oscillator = context.createOscillator()
