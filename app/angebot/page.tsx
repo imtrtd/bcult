@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   title: 'Angebot für Musiker:innen, Artist:innen und Bands — brandcultura',
   description:
     'Listenpreise für Musiker:innen, Artist:innen und Bands: MARK, RELEASE, SYSTEM und MIX. Wir machen Klang sichtbar.',
-  alternates: { canonical: 'https://brandcultura.art/angebot' },
+  alternates: { canonical: 'https://brandcultura.agency/angebot' },
 }
 
 export default function AngebotPage() {

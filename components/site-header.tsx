@@ -8,7 +8,6 @@ const LINKS = [
   { href: '/#arbeit', key: 'method' },
   { href: '/#pakete', key: 'packages' },
   { href: '/angebot', key: 'offer' },
-  { href: '/#mix', key: 'mix' },
   { href: '/#kontakt', key: 'contact' },
 ] as const
 
@@ -20,7 +19,6 @@ export function SiteHeader() {
     method: copy.nav.method,
     packages: copy.nav.packages,
     offer,
-    mix: 'MIX',
     contact: copy.nav.contact,
   }
 

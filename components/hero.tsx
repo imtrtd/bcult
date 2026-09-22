@@ -3,92 +3,57 @@
 import Image from 'next/image'
 import { useLocale } from './locale-provider'
 import { Reveal } from './reveal'
-import { DrumMachine } from './drum-machine'
-
-const EQ_BARS = Array.from({ length: 24 })
 
 export function Hero() {
-  const { copy } = useLocale()
+  const { copy, locale } = useLocale()
   const t = copy.hero
+  const focus = {
+    de: ['Musiker:innen', 'Bands', 'Labels'],
+    en: ['Musicians', 'Bands', 'Labels'],
+    ru: ['Музыканты', 'Группы', 'Лейблы'],
+  }[locale]
 
   return (
-    <section id="top" className="mx-auto max-w-6xl px-4 pb-10 pt-8 sm:px-5 sm:pb-14 sm:pt-12 md:px-8 md:pb-20 md:pt-16">
+    <section id="top" className="mx-auto max-w-6xl px-4 pb-12 pt-10 sm:px-5 sm:pb-16 sm:pt-14 md:px-8 md:pb-24 md:pt-20">
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 border-b border-border pb-4">
         <span className="label-mono text-pink">{t.eyebrow}</span>
-        <span className="label-mono text-muted-foreground">{t.arts}</span>
-        <span className="label-mono ml-auto hidden text-muted-foreground sm:inline">{t.audience}</span>
+        <span className="label-mono text-muted-foreground">{focus.join(' · ')}</span>
       </div>
 
-      <div className="grid gap-8 pt-10 md:grid-cols-[1.15fr_0.85fr] md:items-end md:gap-10 md:pt-16">
+      <div className="grid gap-8 pt-10 md:grid-cols-[1.2fr_0.8fr] md:items-end md:gap-12 md:pt-16">
         <Reveal>
-          <p className="label-mono mb-6 text-purple">01 / sound identity</p>
-          <h1 className="display text-balance text-[clamp(3.4rem,11vw,9rem)] font-extrabold leading-[0.82] tracking-[-0.07em] text-foreground">
-            {t.title}{' '}
-            <span className="text-foreground">{t.titleEnd}</span>
-            <span className="text-pink">.</span>
+          <p className="label-mono mb-6 text-purple">brandcultura / music identity</p>
+          <h1 className="display max-w-3xl text-balance text-[clamp(3.4rem,10vw,8rem)] font-extrabold leading-[0.84] tracking-[-0.07em] text-foreground">
+            {t.title} <span className="text-pink">{t.titleEnd}.</span>
           </h1>
+          <p className="mt-7 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+            {t.intro} <span className="text-foreground">{t.emphasis}</span>
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="/#kontakt" className="flex min-h-12 items-center justify-center bg-lime px-6 py-3 text-sm font-semibold text-lime-foreground transition-colors hover:bg-foreground">{t.discuss}</a>
+            <a href="/#pakete" className="flex min-h-12 items-center justify-center border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-pink hover:text-pink">{copy.nav.packages}</a>
+          </div>
         </Reveal>
 
-        <Reveal delay={120} className="min-w-0">
-          <div className="premium-panel flex h-full flex-col justify-between gap-5 p-4 sm:p-5">
-            <div className="flex items-center justify-between">
+        <Reveal delay={120}>
+          <div className="premium-panel flex flex-col gap-6 p-5 sm:p-7">
+            <div className="flex items-center justify-between gap-3">
               <span className="label-mono text-pink">{t.signal}</span>
-              <span className="label-mono text-muted-foreground">SIGNAL v1</span>
+              <span className="label-mono text-muted-foreground">brandcultura.agency</span>
             </div>
-            <div className="brand-lockup mx-auto flex w-full max-w-[21rem] flex-col items-center">
-              <Image
-                src="/images/brandcultura-mark-web.webp"
-                alt=""
-                width={360}
-                height={360}
-                priority
-                className="h-auto w-[62%] object-contain mix-blend-screen"
-              />
-              <div className="mt-1 whitespace-nowrap font-display text-[clamp(1.65rem,4.2vw,2.65rem)] font-medium leading-none">
-                <span className="text-white">brand</span><span className="text-pink">cultura</span>
-              </div>
-              <span className="agency-glitch mt-3" data-text="AGENCY">AGENCY</span>
+            <div className="brand-lockup mx-auto flex w-full max-w-[18rem] flex-col items-center">
+              <Image src="/images/brandcultura-mark-web.webp" alt="" width={360} height={360} priority className="h-auto w-[62%] object-contain mix-blend-screen" />
+              <div className="mt-2 whitespace-nowrap font-display text-[clamp(1.65rem,4.2vw,2.65rem)] font-medium leading-none"><span className="text-white">brand</span><span className="text-pink">cultura</span></div>
             </div>
-            <div className="flex h-16 items-end gap-1 sm:h-20" aria-hidden="true">
-              {EQ_BARS.map((_, i) => (
-                <span
-                  key={i}
-                  className={`eq-bar flex-1 rounded-sm ${i % 7 === 0 ? 'bg-purple' : i % 3 === 0 ? 'bg-lime' : 'bg-pink/85'}`}
-                  style={{ height: '100%', animationDelay: `${(i % 8) * 0.11}s`, animationDuration: `${1 + (i % 5) * 0.14}s` }}
-                />
-              ))}
+            <div className="border-t border-border pt-4">
+              <p className="label-mono text-muted-foreground">{locale === 'ru' ? 'Работаем с' : locale === 'en' ? 'Working with' : 'Für'}</p>
+              <ul className="mt-3 flex flex-wrap gap-2">
+                {focus.map((item) => <li key={item} className="border border-border px-3 py-2 text-sm text-foreground">{item}</li>)}
+              </ul>
             </div>
-            <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
-              {t.intro} <span className="text-foreground">{t.emphasis}</span>
-            </p>
           </div>
         </Reveal>
       </div>
-
-      <Reveal delay={220} className="mt-10 border-t border-border pt-8 sm:mt-14">
-        <div className="grid gap-8 md:grid-cols-[1fr_auto] md:items-end md:gap-12">
-          <dl className="grid grid-cols-3 gap-4 sm:gap-8">
-            {[['20 Hz - 20 kHz', t.frequency], ['\u221e', t.titleEnd], ['2026', t.eyebrow]].map(([value, label]) => (
-              <div key={value} className="border-l border-pink/50 pl-3 sm:pl-4">
-                <dt className="display text-2xl font-extrabold leading-none tracking-tight text-foreground sm:text-4xl">{value}</dt>
-                <dd className="label-mono mt-2 text-muted-foreground">{label}</dd>
-              </div>
-            ))}
-          </dl>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <a href="/#kontakt" className="flex min-h-12 items-center justify-center bg-lime px-6 py-3 text-sm font-semibold text-lime-foreground transition-transform hover:-translate-y-0.5 hover:bg-foreground">{t.discuss}</a>
-            <a href="/#analyse" className="flex min-h-12 items-center justify-center border border-border px-6 py-3 text-sm font-semibold text-foreground transition-colors hover:border-purple hover:text-purple">{t.spectrum}</a>
-          </div>
-        </div>
-      </Reveal>
-
-      <details id="signal" className="group mt-8 border border-border sm:mt-10">
-        <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 py-3 [&::-webkit-details-marker]:hidden">
-          <span className="label-mono text-lime">{t.playSignal}</span>
-          <span className="label-mono text-muted-foreground group-open:hidden">{t.playHint}</span>
-        </summary>
-        <DrumMachine embedded />
-      </details>
     </section>
   )
 }
