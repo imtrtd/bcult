@@ -87,7 +87,7 @@ export function Hero() {
           <span className="label-mono text-lime">{t.playSignal}</span>
           <span className="label-mono text-muted-foreground group-open:hidden">{t.playHint}</span>
         </summary>
-        <DrumMachine embedded />
+        <DrumMachine />
       </details>
     </section>
   )
