@@ -4,8 +4,9 @@ import { CONTACT_EMAIL } from '@/lib/site'
 import { useLocale } from './locale-provider'
 
 export function SiteFooter() {
-  const { copy } = useLocale()
+  const { copy, locale } = useLocale()
   const t = copy.footer
+  const offer = locale === 'en' ? 'Offer' : locale === 'ru' ? 'Оффер' : 'Angebot'
   return (
     <footer className="border-t border-border">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-8 md:px-8">
@@ -18,6 +19,7 @@ export function SiteFooter() {
             <span className="label-mono text-muted-foreground">© 2026 · SHAPE YOUR SOUND</span>
           </div>
           <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label={t.aria}>
+            <a href="/angebot" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{offer}</a>
             <a href="/#pakete" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.packages}</a>
             <a href="/#kontakt" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.contact}</a>
             <a href="/impressum" className="label-mono text-muted-foreground transition-colors hover:text-foreground">{t.impressum}</a>
